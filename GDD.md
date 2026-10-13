@@ -156,9 +156,9 @@ El juego se compone de 3 escenarios diferentes. Los jugadores podrán elegir el 
 
 | Escenario | Descripción | Bocetos |
 | :---: | :---: | ----- |
-| **Zona medieval Japonesa** | Se caracteriza por su verticalidad. Los personajes deberán saltar entre tejados de torres japonesas para obtener posiciones de ventaja. | ![Boceto del escenario japones][img/pagoda.jpg] |
-| **Zona Lejano Oeste** | Una zona principalmente horizontal inspirada en el concepto cinematográfico del *Lejano Oeste*.   | ![Boceto del escenario del lejano oeste][img/wildwest.jpg] |
-| **Zona Espacio Exterior** | Este escenario se ambienta en una colonia espacial sobre la Luna. Cuenta con plataformas móviles que obligan a estar en constante movimiento, aunque la baja gravedad vuelve esto arriesgado. | ![Boceto del escenario espacial][img/space.jpg] |
+| **Zona medieval Japonesa** | Se caracteriza por su verticalidad. Los personajes deberán saltar entre tejados de torres japonesas para obtener posiciones de ventaja. | ![Boceto del escenario japones](img/pagoda.jpg) |
+| **Zona Lejano Oeste** | Una zona principalmente horizontal inspirada en el concepto cinematográfico del *Lejano Oeste*.   | ![Boceto del escenario del lejano oeste](img/wildwest.jpg) |
+| **Zona Espacio Exterior** | Este escenario se ambienta en una colonia espacial sobre la Luna. Cuenta con plataformas móviles que obligan a estar en constante movimiento, aunque la baja gravedad vuelve esto arriesgado. | ![Boceto del escenario espacial](img/space.jpg) |
 
 # **4\. Narrativa** {#4.-narrativa}
 
@@ -178,7 +178,7 @@ En cuanto a sus habilidades, los *Powans* son expertos en el uso de cualquier ti
 
 ## **5.1. Logotipo**
 
-![Logotipo del juego][img/logo.png]
+![Logotipo del juego](img/logo.png)
 
 ## **5.2. Estilo visual**
 
@@ -192,9 +192,9 @@ Cada escenario cuenta con su paleta de colores representativa acorde con su ambi
 
 | Escenario | Colores principales |
 | :---: | :---: |
-| Japón Medieval | ![Paleta del escenario japones][img/paletajapon.png] |
-| Lejano Oeste | ![Paleta del escenario del Lejano Oeste][img/paletawest.png] |
-| Espacio Exterior | ![Paleta del escenario espacial][img/paletaspace.png] |
+| Japón Medieval | ![Paleta del escenario japones](img/paletajapon.png) |
+| Lejano Oeste | ![Paleta del escenario del Lejano Oeste](img/paletawest.png) |
+| Espacio Exterior | ![Paleta del escenario espacial](img/paletaspace.png) |
 
 ## **5.4. Aspectos técnicos: cámara y representación**
 
@@ -212,7 +212,7 @@ Cada escenario cuenta con su paleta de colores representativa acorde con su ambi
 
 ## **5.6. Bocetos de personajes y pantallas**
 
-![Boceto de los personajes][img/bocetopersonaje.png]
+![Boceto de los personajes](img/bocetopersonaje.png)
 
 # **6\. Sonido** {#6.-sonido}
 
@@ -252,7 +252,7 @@ Cada escenario cuenta con su paleta de colores representativa acorde con su ambi
 
 ## **7.2. Diagrama de flujo**
 
-![Diagrama de flujo de las pantallas][img/diagflujo.png]
+![Diagrama de flujo de las pantallas](img/diagflujo.png)
 
 # **8\. Comunicación y marketing** {#8.-comunicación-y-marketing}
 
