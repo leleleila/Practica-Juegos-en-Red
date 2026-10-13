@@ -118,17 +118,17 @@ Para dos personas jugando en el mismo dispositivo (multijugador local):
 | Arma | Tipo | Aparición |
 | :---: | :---: | :---: |
 | Katana  | Cuerpo a cuerpo | Zona Medieval Japonesa (Aleatorio cada X segundos) |
-| Shuriken / Chacra  | Distancia |  |
-| Cañón | Distancia |  |
-| Bastón extensible | Cuerpo a cuerpo |  |
+| Shuriken / Chacra  | Distancia | Zona Medieval Japonesa (Aleatorio cada X segundos) |
+| Cañón | Distancia | Zona Medieval Japonesa (Aleatorio cada X segundos) |
+| Bastón extensible | Cuerpo a cuerpo |Zona Medieval Japonesa (Aleatorio cada X segundos)  |
 | Pistola láser | Distancia | Zona Espacio Exterior (Aleatorio cada X segundos)  |
-| Sable Láser | Cuerpo a cuerpo |  |
-| Cañón de riel | Distancia |  |
-| Escudo holográfico | Cuerpo a cuerpo |  |
+| Sable Láser | Cuerpo a cuerpo | Zona Espacio Exterior (Aleatorio cada X segundos) |
+| Cañón de riel | Distancia | Zona Espacio Exterior (Aleatorio cada X segundos) |
+| Escudo holográfico | Cuerpo a cuerpo | Zona Espacio Exterior (Aleatorio cada X segundos) |
 | Revólver | Distancia | Zona Lejano Oeste (Aleatorio cada X segundos)  |
-| Escopeta de dos cañones | Distancia |  |
-| Látigo de vaquero | Cuerpo a cuerpo |  |
-| Tomahawk | Cuerpo a cuerpo |  |
+| Escopeta de dos cañones | Distancia | Zona Lejano Oeste (Aleatorio cada X segundos) |
+| Látigo de vaquero | Cuerpo a cuerpo | Zona Lejano Oeste (Aleatorio cada X segundos) |
+| Tomahawk | Cuerpo a cuerpo | Zona Lejano Oeste (Aleatorio cada X segundos) |
 
 ### **3.3.4. Sistema de puntuación**
 
@@ -204,7 +204,7 @@ Cada escenario cuenta con su paleta de colores representativa acorde con su ambi
 
 ## **5.5. Inspiración artística y cultural**
 
-![Moodboard con las inspiraciones del juego][img/moodboard.png]
+![Moodboard con las inspiraciones del juego](img/moodboard.png)
 
 **Idea general y estilo de combate:** Stick Fight: the game (2017) y Samurai Gunn (2013).  
 **Estética de los personajes:** Rayman Legends (2013) y Stick Fight: the game (2017).  
