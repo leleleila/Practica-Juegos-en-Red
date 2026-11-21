@@ -125,6 +125,7 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.collider(player1.sprite, this.semisolidPlatforms, this.onPlatform)
         this.physics.add.collider(player2.sprite, this.semisolidPlatforms, this.onPlatform)
 
+
         this.physics.add.overlap(player1.sprite, this.deathzone, () => {
             player1.sprite.body.reset(480, 0);
         })
@@ -153,6 +154,7 @@ export class GameScene extends Phaser.Scene {
             
             player.sprite.setVelocityX(0);
 
+            //Movimiento Horizontal
             if (mapping.leftKey.isDown) {
                 player.sprite.setVelocityX(-player.speed);
                 player.sprite.setFlipX(false);
@@ -170,6 +172,8 @@ export class GameScene extends Phaser.Scene {
             }
 
 
+
+            //Salto
             if (player.sprite.body.velocity.y > 0) {
                 player.sprite.anims.play('fall', true);
             }
@@ -180,18 +184,21 @@ export class GameScene extends Phaser.Scene {
             } 
 
 
-            if (mapping.downKey.isDown && player.sprite.isOnPlatform) {
-                player.sprite.body.checkCollision.down = false;
-                player.sprite.y += 5
-            } else
+            //Atravesar plataforma semisolid
+            if (mapping.upKey.isDown && player.sprite.body.touching.down)
             {
-                player.sprite.body.checkCollision.down = true;
+                player.sprite.setVelocityY(-400);
+                if (player.sprite.isOnPlatform){
+                    player.sprite.onPlatform.body.checkCollision.up = true;
+                    player.sprite.isOnPlatform = false;
+                    player.sprite.onPlatform = null;
+                }
+                
+            }
+            if ((mapping.downKey.isDown && player.sprite.isOnPlatform)) {
+                player.sprite.onPlatform.body.checkCollision.up = false;
             }
 
-            if (!player.sprite.body.onFloor())
-            {
-                player.sprite.isOnPlatform = false;
-            }
         });
 
     }
