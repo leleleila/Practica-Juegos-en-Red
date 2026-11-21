@@ -16,7 +16,10 @@ export class GameScene extends Phaser.Scene {
         // Load assets
         this.load.image('tilemap', 'assets/images/tilemap_packed.png');
         this.load.image('olas','assets/images/olas_placeholder.png')
-        this.load.atlas('player', 'assets/images/characters.png', 'assets/images/characters_atlas.json');    
+        this.load.spritesheet('player', 'assets/images/characters.png', {
+            frameWidth: 42,
+            frameHeight: 41
+        });    
 
         // Hit sound
         this.load.audio('hit', 'assets/audio/hit.mp3');
@@ -31,6 +34,11 @@ export class GameScene extends Phaser.Scene {
         //Create platforms
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(700,500, 'tilemap');
+
+        //Create semisolid platforms
+        this.semisolidPlatforms = this.physics.add.staticGroup();
+
+        
 
         this.deathzone = this.physics.add.group(
             {
@@ -54,6 +62,39 @@ export class GameScene extends Phaser.Scene {
             this.events.off('resume');
             this.music.destroy();
         });
+
+
+        this.anims.create(
+            {
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('player', { start: 21, end: 25 }),
+            frameRate: 10,
+            repeat: -1
+            }
+        )
+        this.anims.create(
+            {
+            key: 'run',
+            frames: this.anims.generateFrameNumbers('player', { start: 13, end: 20 }),
+            frameRate: 10,
+            repeat: -1
+            }
+        )
+        this.anims.create(
+            {
+            key: 'fall',
+            frames: [{ key: 'player', frame: 8 }],
+            frameRate: 10,
+            }
+        )
+        this.anims.create(
+            {
+            key: 'jump',
+            frames: this.anims.generateFrameNumbers('player', { start: 10, end: 12 }),
+            frameRate: 40,
+            }
+        )
+
 
         // Setup players
         this.setUpPlayers();
@@ -101,18 +142,34 @@ export class GameScene extends Phaser.Scene {
     update(time, delta) {
         this.inputMappings.forEach(mapping => {
             const player = mapping.player;
-
-            if (mapping.upKey.isDown && player.sprite.body.onFloor()) {
-                player.sprite.setVelocityY(-350);
-            } 
             
             player.sprite.setVelocityX(0);
 
             if (mapping.leftKey.isDown) {
                 player.sprite.setVelocityX(-player.speed);
+                player.sprite.setFlipX(false);
+                if (player.sprite.body.onFloor()){
+                    player.sprite.anims.play('run',true)
+                }
             }else if (mapping.rightKey.isDown) {
                 player.sprite.setVelocityX(player.speed);
+                player.sprite.setFlipX(true);
+                if (player.sprite.body.onFloor()){
+                    player.sprite.anims.play('run',true)
+                }
+            }else if(player.sprite.body.onFloor()){
+                player.sprite.anims.play('idle', true);
             }
+
+
+            if (player.sprite.body.velocity.y > 0) {
+                player.sprite.anims.play('fall', true);
+            }
+            
+            if (mapping.upKey.isDown && player.sprite.body.onFloor()) {
+                player.sprite.setVelocityY(-350);
+                player.sprite.anims.play('jump')
+            } 
         });
 
     }
