@@ -8,6 +8,7 @@ const config = {
     type: Phaser.AUTO,      // WebGL if available; otherwise, Canvas
     width: 960,
     height: 540,
+    pixelArt: true, // Para evitar el desenfoque
     physics: {
         default: 'arcade',
         arcade: {
