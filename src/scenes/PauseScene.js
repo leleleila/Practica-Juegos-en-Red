@@ -1,31 +1,29 @@
 import Phaser from 'phaser';
+import { BaseScene } from './BaseScene.js';
 
-export class PauseScene extends Phaser.Scene {
+export class PauseScene extends BaseScene {
     constructor() {
         super('PauseScene');
     }
 
     create() {
-        this.add.rectangle(400, 300, 800, 600, 0x000000, 0.7);
+        this.add.rectangle(480, 270, 800, 600, 0x000000, 0.7);
+        
+        // Título juego pausado
+        this.crearTexto(480, 200, 'Juego Pausado', '#ffffff', { fontSize: '64px' });
 
-        this.add.text(400, 200, 'Game Paused', { fontSize: '64px' }).setOrigin(0.5);
+        // Botón reanudar
+        this.crearBoton(480, 320, 280, 64, 8, 'Reanudar', null, () => {
+            this.scene.resume('GameScene');
+            this.scene.stop();
+        }, '#000000');
 
-        const resumeBtn = this.add.text(400, 320, 'Resume', { fontSize: '32px', color: '#00ff00' }).setOrigin(0.5)
-            .setInteractive({ useHandCursor: true })
-            .on('pointerover', () => resumeBtn.setStyle({ color: '#ffff00' }))
-            .on('pointerout', () => resumeBtn.setStyle({ color: '#00ff00' }))
-            .on('pointerdown', () => {
-                this.scene.stop();
-                this.scene.resume('GameScene');
-            });
+        // Botón volver al menú
+        this.crearBoton(480, 410, 280, 64, 8, 'Volver al menu', null, () => {
+            this.scene.stop('GameScene');
+            this.scene.stop();
+            this.scene.start('MenuScene');
+        }, '#000000');
 
-        const menuBtn = this.add.text(400, 400, 'Menu', { fontSize: '32px', color: '#00ff00' }).setOrigin(0.5)
-            .setInteractive({ useHandCursor: true })
-            .on('pointerover', () => menuBtn.setStyle({ color: '#ffff00' }))
-            .on('pointerout', () => menuBtn.setStyle({ color: '#00ff00' }))
-            .on('pointerdown', () => {
-                this.scene.stop('GameScene');
-                this.scene.start('MenuScene');
-            });
     }
 }

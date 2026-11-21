@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
+import { BaseScene } from './BaseScene.js';
 
-export class MenuScene extends Phaser.Scene {
+export class MenuScene extends BaseScene {
     constructor() {
         super('MenuScene');
     }
@@ -17,7 +18,6 @@ export class MenuScene extends Phaser.Scene {
         this.cameras.main.setBackgroundColor('#91dfeb');
 
         // Título
-
         this.add.image(480, 110, 'logo').setOrigin(0.5);
 
         /*
@@ -26,50 +26,9 @@ export class MenuScene extends Phaser.Scene {
             color: '#ffffff'
         }).setOrigin(0.5);
         */
-        
 
-        const crearBoton = (x, y, ancho, alto, margen, texto, escenaDestino) => {
-
-            const sprite = this.add.nineslice(
-                0, 0,
-                'boton_sencillo',
-                null,
-                ancho,
-                alto,
-                margen, // izq
-                margen, // drcha
-                margen, // arriba
-                margen  // abajo
-            );
-
-
-            const label = this.add.text(0, 0, texto, {
-                fontSize: '32px',
-                color: '#000000'
-            }).setOrigin(0.5);
-
-            const btn = this.add.container(x, y, [sprite, label])
-                .setSize(ancho, alto)
-                .setInteractive({ useHandCursor: true })
-                .on('pointerover', () => {
-                    sprite.setTint(0xdddddd);
-                    label.setStyle({ color: '#00d5ff' });
-                })
-                .on('pointerout', () => {
-                    sprite.clearTint();
-                    label.setStyle({ color: '#000000' });
-                    label.setY(0);
-                })
-                .on('pointerdown', () => {
-                    label.setY(2);
-                    this.scene.start(escenaDestino);
-                });
-
-            return btn;
-        };
-
-        crearBoton(480, 270, 260, 68, 8, 'Juego Local', 'GameScene');
-        crearBoton(480, 380, 260, 68, 8, 'Ajustes', 'SettingsScene');
+        this.crearBoton(480, 270, 260, 68, 8, 'Juego Local', 'GameScene');
+        this.crearBoton(480, 380, 260, 68, 8, 'Ajustes', 'SettingsScene');
 
     }
 }
