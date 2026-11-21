@@ -14,7 +14,7 @@ export class MenuScene extends Phaser.Scene {
     create() {
 
         // Fondo
-        this.cameras.main.setBackgroundColor('#d6d6d6');
+        this.cameras.main.setBackgroundColor('#91dfeb');
 
         // Título
 
@@ -45,7 +45,7 @@ export class MenuScene extends Phaser.Scene {
 
             const label = this.add.text(0, 0, texto, {
                 fontSize: '32px',
-                color: '#00ff00'
+                color: '#000000'
             }).setOrigin(0.5);
 
             const btn = this.add.container(x, y, [sprite, label])
@@ -53,11 +53,11 @@ export class MenuScene extends Phaser.Scene {
                 .setInteractive({ useHandCursor: true })
                 .on('pointerover', () => {
                     sprite.setTint(0xdddddd);
-                    label.setStyle({ color: '#ffff00' });
+                    label.setStyle({ color: '#00d5ff' });
                 })
                 .on('pointerout', () => {
                     sprite.clearTint();
-                    label.setStyle({ color: '#00ff00' });
+                    label.setStyle({ color: '#000000' });
                     label.setY(0);
                 })
                 .on('pointerdown', () => {
