@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+ import Phaser from 'phaser';
 import { Player } from '../entities/Player';
 
 export class GameScene extends Phaser.Scene {
@@ -14,7 +14,7 @@ export class GameScene extends Phaser.Scene {
     preload() {
         // Load assets
         this.load.image('tilemap', 'assets/images/tilemap_packed.png');
-        this.load.image('olas','assets/images/olas_placeholder.png')
+        this.load.image('olas', 'assets/images/olas_placeholder.png');
         this.load.spritesheet('player', 'assets/images/characters.png', {
             frameWidth: 42,
             frameHeight: 41
@@ -28,15 +28,13 @@ export class GameScene extends Phaser.Scene {
     }
 
     create() {
-
-               
-        //Create platforms
+        // Create platforms
         this.platforms = this.physics.add.staticGroup();
-        this.platforms.create(700,500, 'tilemap');
+        this.platforms.create(700, 500, 'tilemap');
 
-        //Create semisolid platforms
+        // Create semisolid platforms
         this.semisolidPlatforms = this.physics.add.staticGroup();
-        this.semisolidPlatforms.create(700,400, 'tilemap').setOrigin(0).refreshBody()
+        this.semisolidPlatforms.create(700, 400, 'tilemap').setOrigin(0).refreshBody();
 
         this.semisolidPlatforms.children.iterate((platform) => {
             platform.body.checkCollision.down = false;
@@ -44,19 +42,16 @@ export class GameScene extends Phaser.Scene {
             platform.body.checkCollision.left = false;
         });
 
+        this.deathzone = this.physics.add.group({
+            key: 'olas',
+            allowGravity: false,
+            setXY: { x: 480, y: 850 }
+        });
 
-        this.deathzone = this.physics.add.group(
-            {
-                key: 'olas',
-                allowGravity: false,
-                setXY: {x: 480, y:850}
-            }
-        )
-
-
-
-        // Looping background music
-        this.music = this.sound.add('music', { loop: true, volume: 0.3 });
+        // Looping background music con el volumen de SettingsScene
+        const savedVolume = this.registry.get('volume') !== undefined ? this.registry.get('volume') : 1;
+        this.sound.volume = savedVolume;
+        this.music = this.sound.add('music', { loop: true });
         this.music.play();
 
         // Pause/resume the music with the scene and stop it on exit
@@ -65,41 +60,33 @@ export class GameScene extends Phaser.Scene {
         this.events.once('shutdown', () => {
             this.events.off('pause');
             this.events.off('resume');
+            this.input.keyboard.off('keydown-ESC');
             this.music.destroy();
         });
 
-
-        this.anims.create(
-            {
+        // Animaciones de los personajes
+        this.anims.create({
             key: 'idle',
             frames: this.anims.generateFrameNumbers('player', { start: 21, end: 25 }),
             frameRate: 10,
             repeat: -1
-            }
-        )
-        this.anims.create(
-            {
+        });
+        this.anims.create({
             key: 'run',
             frames: this.anims.generateFrameNumbers('player', { start: 13, end: 20 }),
             frameRate: 10,
             repeat: -1
-            }
-        )
-        this.anims.create(
-            {
+        });
+        this.anims.create({
             key: 'fall',
             frames: [{ key: 'player', frame: 8 }],
-            frameRate: 10,
-            }
-        )
-        this.anims.create(
-            {
+            frameRate: 10
+        });
+        this.anims.create({
             key: 'jump',
             frames: this.anims.generateFrameNumbers('player', { start: 10, end: 12 }),
-            frameRate: 40,
-            }
-        )
-
+            frameRate: 40
+        });
 
         // Setup players
         this.setUpPlayers();
@@ -117,25 +104,41 @@ export class GameScene extends Phaser.Scene {
 
         this.players.set(player1.id, player1);
         this.players.set(player2.id, player2);
-        
 
-        this.physics.add.collider(player1.sprite, this.platforms)
-        this.physics.add.collider(player2.sprite, this.platforms)
+        this.physics.add.collider(player1.sprite, this.platforms);
+        this.physics.add.collider(player2.sprite, this.platforms);
 
-        this.physics.add.collider(player1.sprite, this.semisolidPlatforms, this.onPlatform)
-        this.physics.add.collider(player2.sprite, this.semisolidPlatforms, this.onPlatform)
+        this.physics.add.collider(player1.sprite, this.semisolidPlatforms, this.onPlatform);
+        this.physics.add.collider(player2.sprite, this.semisolidPlatforms, this.onPlatform);
 
         this.physics.add.overlap(player1.sprite, this.deathzone, () => {
             player1.sprite.body.reset(480, 0);
-        })
+        });
         this.physics.add.overlap(player2.sprite, this.deathzone, () => {
             player2.sprite.body.reset(480, 0);
-        })
+        });
 
         const Keys = Phaser.Input.Keyboard.KeyCodes;
+        const ctrlCambiados = this.registry.get('controls') || {
+            p1: { up: 'W', left: 'A', right: 'D' },
+            p2: { up: 'UP', left: 'LEFT', right: 'RIGHT' }
+        };
+
         this.inputMappings = [
-            {player: player1, up: Keys.W, down: Keys.S, left: Keys.A, right: Keys.D},
-            {player: player2, up: Keys.UP, down: Keys.DOWN, left: Keys.LEFT, right: Keys.RIGHT}
+            {
+                player: player1,
+                up: Keys[ctrlCambiados.p1.up] || Keys.W,
+                down: Keys.S,
+                left: Keys[ctrlCambiados.p1.left] || Keys.A,
+                right: Keys[ctrlCambiados.p1.right] || Keys.D
+            },
+            {
+                player: player2,
+                up: Keys[ctrlCambiados.p2.up] || Keys.UP,
+                down: Keys.DOWN,
+                left: Keys[ctrlCambiados.p2.left] || Keys.LEFT,
+                right: Keys[ctrlCambiados.p2.right] || Keys.RIGHT
+            }
         ].map(mapping => ({
             player: mapping.player,
             upKey: this.input.keyboard.addKey(mapping.up),
@@ -145,61 +148,53 @@ export class GameScene extends Phaser.Scene {
         }));
     }
 
-
-
     update(time, delta) {
         this.inputMappings.forEach(mapping => {
             const player = mapping.player;
-            
+
             player.sprite.setVelocityX(0);
 
             if (mapping.leftKey.isDown) {
                 player.sprite.setVelocityX(-player.speed);
                 player.sprite.setFlipX(false);
-                if (player.sprite.body.onFloor()){
-                    player.sprite.anims.play('run',true)
+                if (player.sprite.body.onFloor()) {
+                    player.sprite.anims.play('run', true);
                 }
-            }else if (mapping.rightKey.isDown) {
+            } else if (mapping.rightKey.isDown) {
                 player.sprite.setVelocityX(player.speed);
                 player.sprite.setFlipX(true);
-                if (player.sprite.body.onFloor()){
-                    player.sprite.anims.play('run',true)
+                if (player.sprite.body.onFloor()) {
+                    player.sprite.anims.play('run', true);
                 }
-            }else if(player.sprite.body.onFloor()){
+            } else if (player.sprite.body.onFloor()) {
                 player.sprite.anims.play('idle', true);
             }
-
 
             if (player.sprite.body.velocity.y > 0) {
                 player.sprite.anims.play('fall', true);
             }
-            
+
             if (mapping.upKey.isDown && player.sprite.body.onFloor()) {
                 player.sprite.setVelocityY(-350);
-                player.sprite.anims.play('jump')
-            } 
-
+                player.sprite.anims.play('jump');
+            }
 
             if (mapping.downKey.isDown && player.sprite.isOnPlatform) {
                 player.sprite.body.checkCollision.down = false;
-                player.sprite.y += 5
-            } else
-            {
+                player.sprite.y += 5;
+            } else {
                 player.sprite.body.checkCollision.down = true;
             }
 
-            if (!player.sprite.body.onFloor())
-            {
+            if (!player.sprite.body.onFloor()) {
                 player.sprite.isOnPlatform = false;
             }
         });
-
     }
-    
-    //Para detectar si puedes atravesarla
-    onPlatform(player, platform) {   
+
+    // Para detectar si puedes atravesarla
+    onPlatform(player, platform) {
         player.isOnPlatform = true;
         player.onPlatform = platform;
     }
-
 }

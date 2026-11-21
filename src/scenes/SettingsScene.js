@@ -22,7 +22,7 @@ export class SettingsScene extends BaseScene {
         // Control de volumen
         // Guardamos el volumen en el registro global de Phaser
         if(this.registry.get('volume')===undefined){
-            this.registry.set('volume',0.5);
+            this.registry.set('volume', 1);
         }
         this.sound.volume = this.registry.get('volume');
 
@@ -32,23 +32,33 @@ export class SettingsScene extends BaseScene {
 
         // Botón bajar volumen
         this.crearBoton(480 - 130, 210, 70, 56, 8, ' - ', null, () => {
-            const newVol = Math.max(0, +(this.sound.volume - 0.1).toFixed(1));
-            this.sound.volume = newVol;
-            this.registry.set('volume', newVol);
-            volText.setText(`${Math.round(newVol * 100)}%`);
+            const actual = this.registry.get('volume');
+            const nuevoVol = Math.max(0, +(actual - 0.1).toFixed(1));
+            this.sound.volume = nuevoVol;
+            this.registry.set('volume', nuevoVol);
+            volText.setText(`${Math.round(nuevoVol * 100)}%`);
         });
 
         // Botón subir volumen
         this.crearBoton(480 + 130, 210, 70, 56, 8, ' + ', null, () => {
-            const newVol = Math.min(1, +(this.sound.volume + 0.1).toFixed(1));
-            this.sound.volume = newVol;
-            this.registry.set('volume', newVol);
-            volText.setText(`${Math.round(newVol * 100)}%`);
+            const actual = this.registry.get('volume');
+            const nuevoVol = Math.min(1, +(actual + 0.1).toFixed(1));
+            this.sound.volume = nuevoVol;
+            this.registry.set('volume', nuevoVol);
+            volText.setText(`${Math.round(nuevoVol * 100)}%`);
         });
 
+        // Botón que lleva a la pantalla de personalizar teclas
+        const btnTeclas = this.crearBoton(480, 320, 440, 64, 8, 'Cambiar teclas de control', 'ControlsScene', null, '#000000');
+        btnTeclas.getAt(1).setFontSize('24px');
+
         // Botón volver al menú
-        this.crearBoton(480, 420, 280, 64, 8, 'Volver al Menu', 'MenuScene', null, '#000000');
+        this.crearBoton(480, 430, 280, 64, 8, 'Volver al Menu', 'MenuScene', null, '#000000');
+
     }
+
+       
+    
 
     
 }
