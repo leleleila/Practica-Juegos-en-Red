@@ -37,8 +37,14 @@ export class GameScene extends Phaser.Scene {
 
         //Create semisolid platforms
         this.semisolidPlatforms = this.physics.add.staticGroup();
+        this.semisolidPlatforms.create(700,400, 'tilemap').setOrigin(0).refreshBody()
 
-        
+        this.semisolidPlatforms.children.iterate((platform) => {
+            platform.body.checkCollision.down = false;
+            platform.body.checkCollision.right = false;
+            platform.body.checkCollision.left = false;
+        });
+
 
         this.deathzone = this.physics.add.group(
             {
@@ -116,6 +122,8 @@ export class GameScene extends Phaser.Scene {
 
         this.physics.add.collider(player1.sprite, this.platforms)
         this.physics.add.collider(player2.sprite, this.platforms)
+        this.physics.add.collider(player1.sprite, this.semisolidPlatforms)
+        this.physics.add.collider(player2.sprite, this.semisolidPlatforms)
 
         this.physics.add.overlap(player1.sprite, this.deathzone, () => {
             player1.sprite.body.reset(480, 0);
@@ -170,6 +178,14 @@ export class GameScene extends Phaser.Scene {
                 player.sprite.setVelocityY(-350);
                 player.sprite.anims.play('jump')
             } 
+
+            if (mapping.downKey.isDown && player.sprite.body.onFloor()) {
+                player.sprite.body.checkCollision.down = false;
+                player.sprite.y += 5
+            } else
+            {
+                player.sprite.body.checkCollision.down = true;
+            }
         });
 
     }
