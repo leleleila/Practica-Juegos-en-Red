@@ -1,5 +1,4 @@
- import Phaser from 'phaser';
-import { Paddle } from '../entities/Paddle';
+import Phaser from 'phaser';
 import { Player } from '../entities/Player';
 
 export class GameScene extends Phaser.Scene {
@@ -122,8 +121,9 @@ export class GameScene extends Phaser.Scene {
 
         this.physics.add.collider(player1.sprite, this.platforms)
         this.physics.add.collider(player2.sprite, this.platforms)
-        this.physics.add.collider(player1.sprite, this.semisolidPlatforms)
-        this.physics.add.collider(player2.sprite, this.semisolidPlatforms)
+
+        this.physics.add.collider(player1.sprite, this.semisolidPlatforms, this.onPlatform)
+        this.physics.add.collider(player2.sprite, this.semisolidPlatforms, this.onPlatform)
 
         this.physics.add.overlap(player1.sprite, this.deathzone, () => {
             player1.sprite.body.reset(480, 0);
@@ -179,14 +179,27 @@ export class GameScene extends Phaser.Scene {
                 player.sprite.anims.play('jump')
             } 
 
-            if (mapping.downKey.isDown && player.sprite.body.onFloor()) {
+
+            if (mapping.downKey.isDown && player.sprite.isOnPlatform) {
                 player.sprite.body.checkCollision.down = false;
                 player.sprite.y += 5
             } else
             {
                 player.sprite.body.checkCollision.down = true;
             }
+
+            if (!player.sprite.body.onFloor())
+            {
+                player.sprite.isOnPlatform = false;
+            }
         });
 
     }
+    
+    //Para detectar si puedes atravesarla
+    onPlatform(player, platform) {   
+        player.isOnPlatform = true;
+        player.onPlatform = platform;
+    }
+
 }
