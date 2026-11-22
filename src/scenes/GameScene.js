@@ -110,11 +110,18 @@ export class GameScene extends Phaser.Scene {
         this.anims.create(
             {
             key: 'jump',
-            frames: this.anims.generateFrameNumbers('player', { start: 10, end: 12 }),
+            frames: [{ key: 'player', frame: 12 }],
             frameRate: 40,
             }
         )
 
+        this.anims.create(
+            {
+            key: 'katana',
+            frames: this.anims.generateFrameNumbers('player', { start: 0, end: 5 }),
+            frameRate: 24
+            }
+        )
 
         // Setup players
         this.setUpPlayers();
@@ -136,34 +143,35 @@ export class GameScene extends Phaser.Scene {
 
         this.players.set(player1.id, player1);
         this.players.set(player2.id, player2);
+
+        player1.enemy = player2;
+        player2.enemy = player1;
         
-        this.players.set(player1.deaths, 0)
-        this.players.set(player2.deaths, 0)
+        this.physics.add.collider(player1.sprite, this.platforms);
+        this.physics.add.collider(player2.sprite, this.platforms);
 
-        this.physics.add.collider(player1.sprite, this.platforms)
-        this.physics.add.collider(player2.sprite, this.platforms)
-
-        this.physics.add.collider(player1.sprite, this.semisolidPlatformsPlayer1, this.onPlatform)
-        this.physics.add.collider(player2.sprite, this.semisolidPlatformsPlayer2, this.onPlatform)
+        this.physics.add.collider(player1.sprite, this.semisolidPlatformsPlayer1, this.onPlatform);
+        this.physics.add.collider(player2.sprite, this.semisolidPlatformsPlayer2, this.onPlatform);
 
 
         this.physics.add.overlap(player1.sprite, this.deathzone, () => {
-            this.loseRound(player1.sprite);
+            this.loseRound(player1);
         })
         this.physics.add.overlap(player2.sprite, this.deathzone, () => {
-            this.loseRound(player2.sprite);
+            this.loseRound(player2);
         })
 
         const Keys = Phaser.Input.Keyboard.KeyCodes;
         this.inputMappings = [
-            {player: player1, up: Keys.W, down: Keys.S, left: Keys.A, right: Keys.D},
-            {player: player2, up: Keys.UP, down: Keys.DOWN, left: Keys.LEFT, right: Keys.RIGHT}
+            {player: player1, up: Keys.W, down: Keys.S, left: Keys.A, right: Keys.D, attack: Keys.SPACE},
+            {player: player2, up: Keys.UP, down: Keys.DOWN, left: Keys.LEFT, right: Keys.RIGHT, attack: Keys.P}
         ].map(mapping => ({
             player: mapping.player,
             upKey: this.input.keyboard.addKey(mapping.up),
             downKey: this.input.keyboard.addKey(mapping.down),
             leftKey: this.input.keyboard.addKey(mapping.left),
-            rightKey: this.input.keyboard.addKey(mapping.right)
+            rightKey: this.input.keyboard.addKey(mapping.right),
+            attackKey: this.input.keyboard.addKey(mapping.attack)
         }));
     }
 
@@ -179,29 +187,18 @@ export class GameScene extends Phaser.Scene {
             if (mapping.leftKey.isDown) {
                 player.sprite.setVelocityX(-player.speed);
                 player.sprite.setFlipX(false);
-                if (player.sprite.body.onFloor()){
-                    player.sprite.anims.play('run',true)
-                }
+
             }else if (mapping.rightKey.isDown) {
                 player.sprite.setVelocityX(player.speed);
                 player.sprite.setFlipX(true);
-                if (player.sprite.body.onFloor()){
-                    player.sprite.anims.play('run',true)
-                }
-            }else if(player.sprite.body.onFloor()){
-                player.sprite.anims.play('idle', true);
             }
 
 
 
             //Salto
-            if (player.sprite.body.velocity.y > 0) {
-                player.sprite.anims.play('fall', true);
-            }
-            
+
             if (mapping.upKey.isDown && player.sprite.body.onFloor()) {
                 player.sprite.setVelocityY(-350);
-                player.sprite.anims.play('jump')
             } 
 
 
@@ -219,9 +216,48 @@ export class GameScene extends Phaser.Scene {
             if ((mapping.downKey.isDown && player.sprite.isOnPlatform)) {
                 player.sprite.onPlatform.body.checkCollision.up = false;
             }
+            //Atacar
+            if (mapping.attackKey.isDown) {
+                if (!player.isAttacking)
+                {
+                    this.playerAttack(player);
+                }
+            }
 
+
+            //Animaciones
+            if (!player.isAttacking){
+                if(!player.sprite.body.onFloor())
+                {
+                    if (player.sprite.body.velocity.y > 0)
+                    {
+                        player.sprite.anims.play('fall',true);
+                    } else{
+                        player.sprite.anims.play('jump',true);
+                    }
+                } else
+                {   
+                    if(mapping.rightKey.isDown || mapping.leftKey.isDown)
+                    {
+                        player.sprite.anims.play('run',true);
+                    } else{
+                        player.sprite.anims.play('idle',true);
+                    }
+                }
+            }
+
+
+            //Mover la hitbox con el personaje
+            if (player.isAttacking && player.hitbox != null)
+            {
+                let offsetX = player.sprite.flipX ? 12 : -12;
+                let targetX = player.sprite.x + offsetX;
+                let targetY = player.sprite.y;
+
+                player.hitbox.setPosition(targetX, targetY);
+                player.hitbox.body.reset(targetX, targetY);
+            }
         });
-
     }
     
     //Para detectar si puedes atravesarla
@@ -232,8 +268,8 @@ export class GameScene extends Phaser.Scene {
 
     //Perder una ronda
     loseRound(player) {
-        player.y -= 300
-        if (player.id == 'player1')
+        player.sprite.y -= 300
+        if (player.id === 'player1')
         {
             this.score.player2 += 1;
         } else
@@ -242,5 +278,35 @@ export class GameScene extends Phaser.Scene {
         }
         this.scoreRight.setText(this.score.player1.toString());
         this.scoreLeft.setText(this.score.player2.toString());
+    }
+
+    //Ataque de un jugador
+    playerAttack(player)
+    {
+        player.isAttacking = true;
+        player.sprite.anims.play('katana', true);
+
+        let offsetX = player.sprite.flipX ? 12 : -12; //El sprite del jugador se queda a un lado u otro
+        //Crear la hitbox
+        let hitbox = this.add.rectangle(player.sprite.x + offsetX,player.sprite.y,20,32);
+
+        this.physics.add.existing(hitbox, false);
+        hitbox.body.setAllowGravity(false);
+
+        this.physics.add.overlap(player.enemy.sprite, hitbox, () => {
+            this.loseRound(player.enemy);
+        })
+        
+        player.hitbox = hitbox;
+
+        player.sprite.once('animationcomplete', () => {
+            player.isAttacking = false;
+            if (player.hitbox)
+            {
+                player.hitbox.destroy();
+                player.hitbox = null;
+            }
+        });
+    
     }
 }

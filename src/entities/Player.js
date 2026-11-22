@@ -4,7 +4,11 @@ export class Player {
         this.id = id;
         this.scene = scene;
         this.speed = 300;
-        this.deaths = 0;
+
+        this.isAtacking = false;
+        this.hitbox = null;
+
+        this.enemy = null;
 
         this.sprite = scene.physics.add.sprite(x, y, 'player', 'tilemap-characters_packed_0');
         this.sprite.body.setSize(32, 32);
