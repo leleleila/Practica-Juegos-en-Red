@@ -9,6 +9,10 @@ export class GameScene extends Phaser.Scene {
     init() {
         this.players = new Map();
         this.inputMappings = [];
+        this.score = {
+            player1: 0,
+            player2: 0
+        };
     }
 
     preload() {
@@ -30,15 +34,26 @@ export class GameScene extends Phaser.Scene {
     create() {
 
                
-        //Create platforms
+        //Crear plataformas solidas
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(700,500, 'tilemap');
 
-        //Create semisolid platforms
-        this.semisolidPlatforms = this.physics.add.staticGroup();
-        this.semisolidPlatforms.create(700,400, 'tilemap').setOrigin(0).refreshBody()
+        //Crear plataformas semisolidas para ambos jugadores
+        //Por como se manejan la acción de atravesarlas tenemos que hace hacer dos grupos
+        this.semisolidPlatformsPlayer1 = this.physics.add.staticGroup();
+        this.semisolidPlatformsPlayer1.create(700,400, 'tilemap').setOrigin(0).refreshBody()
 
-        this.semisolidPlatforms.children.iterate((platform) => {
+        this.semisolidPlatformsPlayer1.children.iterate((platform) => {
+            platform.body.checkCollision.down = false;
+            platform.body.checkCollision.right = false;
+            platform.body.checkCollision.left = false;
+        });
+
+
+        this.semisolidPlatformsPlayer2 = this.physics.add.staticGroup();
+        this.semisolidPlatformsPlayer2.create(700,400, 'tilemap').setOrigin(0).refreshBody()
+
+        this.semisolidPlatformsPlayer2.children.iterate((platform) => {
             platform.body.checkCollision.down = false;
             platform.body.checkCollision.right = false;
             platform.body.checkCollision.left = false;
@@ -109,6 +124,10 @@ export class GameScene extends Phaser.Scene {
             this.scene.pause();
             this.scene.launch('PauseScene');
         });
+
+        //Puntuación
+        this.scoreLeft = this.add.text(400, 50, '0', { fontSize: '48px' }).setOrigin(0.5);
+        this.scoreRight = this.add.text(608, 50, '0', { fontSize: '48px' }).setOrigin(0.5);
     }
 
     setUpPlayers() {
@@ -118,19 +137,21 @@ export class GameScene extends Phaser.Scene {
         this.players.set(player1.id, player1);
         this.players.set(player2.id, player2);
         
+        this.players.set(player1.deaths, 0)
+        this.players.set(player2.deaths, 0)
 
         this.physics.add.collider(player1.sprite, this.platforms)
         this.physics.add.collider(player2.sprite, this.platforms)
 
-        this.physics.add.collider(player1.sprite, this.semisolidPlatforms, this.onPlatform)
-        this.physics.add.collider(player2.sprite, this.semisolidPlatforms, this.onPlatform)
+        this.physics.add.collider(player1.sprite, this.semisolidPlatformsPlayer1, this.onPlatform)
+        this.physics.add.collider(player2.sprite, this.semisolidPlatformsPlayer2, this.onPlatform)
 
 
         this.physics.add.overlap(player1.sprite, this.deathzone, () => {
-            player1.sprite.body.reset(480, 0);
+            this.loseRound(player1.sprite);
         })
         this.physics.add.overlap(player2.sprite, this.deathzone, () => {
-            player2.sprite.body.reset(480, 0);
+            this.loseRound(player2.sprite);
         })
 
         const Keys = Phaser.Input.Keyboard.KeyCodes;
@@ -209,4 +230,17 @@ export class GameScene extends Phaser.Scene {
         player.onPlatform = platform;
     }
 
+    //Perder una ronda
+    loseRound(player) {
+        player.y -= 300
+        if (player.id == 'player1')
+        {
+            this.score.player2 += 1;
+        } else
+        {
+            this.score.player1 += 1;
+        }
+        this.scoreRight.setText(this.score.player1.toString());
+        this.scoreLeft.setText(this.score.player2.toString());
+    }
 }
