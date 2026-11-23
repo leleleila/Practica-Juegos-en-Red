@@ -20,7 +20,7 @@ export class GameScene extends Phaser.Scene {
     preload() {
         // Load assets
         this.load.image('tilemap', 'assets/images/tilemap_packed.png');
-        this.load.image('olas', 'assets/images/olas_placeholder.png');
+        this.load.image('olas', 'assets/images/olas.png');
 
         this.load.image('katana', 'assets/images/katana.png');
         this.load.image('baston', 'assets/images/baston.png');
@@ -163,11 +163,11 @@ export class GameScene extends Phaser.Scene {
         });
 
 
-        this.deathzone = this.physics.add.group({
-            key: 'olas',
-            allowGravity: false,
-            setXY: { x: 480, y: 850 }
-        });
+        this.deathzone = this.physics.add.sprite(480, 850, 'olas');
+        this.deathzone.body.setAllowGravity(false);
+        this.deathzone.setVelocityY(-5);
+        this.deathzone.body.setSize(this.deathzone.width*2, this.deathzone.height);
+        this.deathzone.body.setOffset(-this.deathzone.width/2,10);
 
         // Looping background music con el volumen de SettingsScene
         const savedVolume = this.registry.get('volume') !== undefined ? this.registry.get('volume') : 1;
@@ -277,7 +277,7 @@ export class GameScene extends Phaser.Scene {
 
         this.powerUpActive = false;
         this.powerTimer = this.time.addEvent({
-            delay: Phaser.Math.Between(1000,5000),
+            delay: Phaser.Math.Between(1000,10000),
             callback: () => {
                 if(!this.powerUpActive)
                 {
