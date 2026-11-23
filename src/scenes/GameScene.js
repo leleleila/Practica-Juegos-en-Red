@@ -254,6 +254,19 @@ export class GameScene extends Phaser.Scene {
             this.scene.launch('PauseScene');
         });
 
+        // Generación de armas
+        this.weapons = this.physics.add.group({
+            allowGravity: false
+        });
+
+        this.weaponTimer = this.time.addEvent({
+            delay: 6000,
+            callback: this.spawnWeapon,
+            callbackScope: this,
+            loop: true
+        })
+
+
         //Puntuación
         this.scoreLeft = this.add.text(400, 50, '0', { fontSize: '48px' }).setOrigin(0.5);
         this.scoreRight = this.add.text(608, 50, '0', { fontSize: '48px' }).setOrigin(0.5);
@@ -263,17 +276,6 @@ export class GameScene extends Phaser.Scene {
     setUpPlayers() {
         const player1 = new Player(this, 'player1', 50, 300);
         const player2 = new Player(this, 'player2', 750, 300);
-
-        const weaponTest = new Weapon(this, 500, 300);
-
-        this.physics.add.overlap(player1.sprite, weaponTest.sprite, () => {
-            player1.weapon = weaponTest.name;
-            weaponTest.sprite.destroy();
-        })
-        this.physics.add.overlap(player2.sprite, weaponTest.sprite, () => {
-            player2.weapon = weaponTest.name;
-            weaponTest.sprite.destroy();
-        })
 
         this.players.set(player1.id, player1);
         this.players.set(player2.id, player2);
@@ -329,6 +331,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     update(time, delta) {
+        //Controles personajes
         this.inputMappings.forEach(mapping => {
             const player = mapping.player;
 
@@ -409,6 +412,7 @@ export class GameScene extends Phaser.Scene {
                 player.hitbox.body.reset(targetX, targetY);
             }
         });
+
     }
 
     // Para detectar si puedes atravesarla
@@ -465,11 +469,8 @@ export class GameScene extends Phaser.Scene {
             case 'katana':
                 player.isAttacking = true;
                 player.sprite.anims.play('katana', true);
-
                 
                 //Crear la hitbox
-                
-
                 this.physics.add.existing(hitbox, false);
                 hitbox.body.setAllowGravity(false);
 
@@ -535,5 +536,35 @@ export class GameScene extends Phaser.Scene {
             default:
                 break;
         }
+    }
+
+
+    spawnWeapon(){
+        const maxWeapons = 3; //Evitamos que spawneen demasiadas
+        if (this.weapons.countActive(true) >= maxWeapons){
+            return;
+        }
+
+        const spawnPoints = [
+            { x: 480, y: 160 }, 
+            { x: 380, y: 225 }, 
+            { x: 580, y: 225 }, 
+            { x: 480, y: 290 }, 
+            { x: 110, y: 250 }, 
+            { x: 850, y: 250 }
+        ]
+
+        const point = spawnPoints[Phaser.Math.Between(0,5)];
+
+        const weapon = new Weapon(this, point.x, point.y);
+
+        this.weapons.add(weapon.sprite);
+
+        this.players.forEach((player) => {
+            this.physics.add.overlap(player.sprite, weapon.sprite, () => {
+                player.weapon = weapon.name;
+                weapon.sprite.destroy();
+            });
+        });
     }
 }
