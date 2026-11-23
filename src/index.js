@@ -24,7 +24,7 @@ const config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
-    scene: [MenuScene, SettingsScene, ControlsScene, GameScene, PauseScene, GameOverScene]      // The first scene starts automatically
+    scene: [MenuScene, SettingsScene, ControlsScene, GameScene, PauseScene, CreditsScene, TutorialScene, GameOverScene]      // The first scene starts automatically
 };
 
 const game = new Phaser.Game(config);
