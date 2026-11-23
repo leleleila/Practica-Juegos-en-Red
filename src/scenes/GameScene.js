@@ -42,6 +42,8 @@ export class GameScene extends Phaser.Scene {
         //Por como se manejan la acción de atravesarlas tenemos que hace hacer dos grupos
         this.semisolidPlatformsPlayer1 = this.physics.add.staticGroup();
         this.semisolidPlatformsPlayer1.create(700,400, 'tilemap').setOrigin(0).refreshBody()
+        this.semisolidPlatformsPlayer1.create(20,400, 'tilemap').setOrigin(0).refreshBody()
+
 
         this.semisolidPlatformsPlayer1.children.iterate((platform) => {
             platform.body.checkCollision.down = false;
@@ -111,6 +113,15 @@ export class GameScene extends Phaser.Scene {
             key: 'katana',
             frames: this.anims.generateFrameNumbers('player', { start: 0, end: 5 }),
             frameRate: 24
+            }
+        )
+
+        this.anims.create(
+            {
+            key: 'hit',
+            frames: this.anims.generateFrameNumbers('player', { start: 6, end: 7 }),
+            frameRate: 12,
+            repeat: 2
             }
         )
 
@@ -226,7 +237,7 @@ export class GameScene extends Phaser.Scene {
             }
             //Atacar
             if (mapping.attackKey.isDown) {
-                if (!player.isAttacking)
+                if (!player.isAttacking && !player.isHit)
                 {
                     this.playerAttack(player);
                 }
@@ -234,7 +245,7 @@ export class GameScene extends Phaser.Scene {
 
 
             //Animaciones
-            if (!player.isAttacking){
+            if (!player.isAttacking && !player.isHit){
                 if(!player.sprite.body.onFloor())
                 {
                     if (player.sprite.body.velocity.y > 0)
@@ -276,7 +287,9 @@ export class GameScene extends Phaser.Scene {
 
     //Perder una ronda
     loseRound(player) {
-        player.sprite.y -= 300
+        player.sprite.body.enable = false;
+        player.isHit = true;
+        player.sprite.anims.play('hit',true);
         if (player.id === 'player1')
         {
             this.score.player2 += 1;
@@ -284,6 +297,14 @@ export class GameScene extends Phaser.Scene {
         {
             this.score.player1 += 1;
         }
+
+        player.sprite.once('animationcomplete', () => {
+            player.sprite.setPosition(480, 0);
+            player.sprite.setVelocityY(0);
+            player.sprite.body.enable = true;
+            player.isHit = false;
+        });
+
         this.scoreRight.setText(this.score.player1.toString());
         this.scoreLeft.setText(this.score.player2.toString());
     }
