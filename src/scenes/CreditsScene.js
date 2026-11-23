@@ -16,19 +16,23 @@ export class CreditsScene extends BaseScene {
     
         this.cameras.main.setBackgroundColor('#91dfeb');
         
-        this.crearTexto(480, 70, 'CRÉDITOS', { fontSize: '100px' });
+        //this.crearTexto(480, 70, 'CRÉDITOS', '100px' );
 
-        this.crearTexto(480, 130, 'Programación', '#000000', { fontSize: '28px' });
-            this.crearTexto(480, 170, 'Iván Domingo Reyes', '#000000', { fontSize: '18px' });
-            this.crearTexto(480, 200, 'Genma de Argüeso Muñoz', '#000000', { fontSize: '18px' });
-            this.crearTexto(480, 230, 'Leila Aabbouz Chillada', '#000000', { fontSize: '18px' });
+        this.crearBotonNoInteractivo(480, 60, 230, 40, 8, 'Programación', '#000000', '36px');
+        //this.crearTexto(480, 70, 'Programación', '#000000','28px' );
+            this.crearTexto(480, 110, 'Iván Domingo Reyes', '#000000', '18px');
+            this.crearTexto(480, 150, 'Leila Aabbouz Chillada', '#000000', '18px');
+            this.crearTexto(480, 190, 'Genma de Argüeso Muñoz', '#000000', '18px');
+            this.crearTexto(480, 230, 'Aimar Hernández Holgado', '#000000', '18px');
 
-        this.crearTexto(480, 280, 'Pixel Art', '#000000', { fontSize: '28px' });
-            this.crearTexto(480, 330, 'Leila Aabbouz Chillada', '#000000', { fontSize: '18px' });
-            this.crearTexto(480, 360, 'Aimar Hernández Holgado', '#000000', { fontSize: '18px' });
+            this.crearBotonNoInteractivo(480, 280, 230, 40, 8, 'Pixel Art', '#000000', '28px');
+            //this.crearTexto(480, 280, 'Pixel Art', '#000000', '28px');
+            this.crearTexto(480, 330, 'Leila Aabbouz Chillada', '#000000', '18px');
+            this.crearTexto(480, 370, 'Aimar Hernández Holgado', '#000000', '18px');
 
-        this.crearTexto(480, 440, 'Sonido', '#000000', { fontSize: '28px' });
-            this.crearTexto(480, 470, 'Aqui ponemos de donde hemos cogido la musica y los efectos de sonido', '#000000', { fontSize: '18px' });
+        this.crearBotonNoInteractivo(480, 440, 230, 40, 8, 'Sonido', '#000000', '28px');
+        //this.crearTexto(480, 440, 'Sonido', '#000000', '28px');
+            this.crearTexto(480, 490, 'Aqui ponemos de donde hemos cogido la musica y los efectos de sonido', '#000000', '18px');
 
         //Botón volver al menú
         this.crearBotonDibujo(900, 480, 32, 32, 'MenuScene', null);

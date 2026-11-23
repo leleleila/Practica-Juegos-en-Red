@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 export class BaseScene extends Phaser.Scene {
     constructor(key) {
         super(key);
-        this.fuentePrincipal = '"Minecraft", monospace';
+        this.fuentePrincipal = '"PixeloidMono", monospace';
     }
 
     crearTexto(x, y, contenido, color = '#000000', tamanoFuente = '28px', estilo = {}) {
