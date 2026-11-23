@@ -128,6 +128,10 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.existing(platSemi,true);
         this.semisolidPlatformsPlayer1.add(platSemi);
 
+        platSemi = this.add.rectangle(428,138,104,7).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
+
         this.semisolidPlatformsPlayer1.children.iterate((platform) => {
             platform.body.checkCollision.down = false;
             platform.body.checkCollision.right = false;
@@ -258,9 +262,10 @@ export class GameScene extends Phaser.Scene {
         this.weapons = this.physics.add.group({
             allowGravity: false
         });
+        this.isOnSpawn = [false,false,false,false,false,false];
 
         this.weaponTimer = this.time.addEvent({
-            delay: 6000,
+            delay: Phaser.Math.Between(3000,8000),
             callback: this.spawnWeapon,
             callbackScope: this,
             loop: true
@@ -554,7 +559,16 @@ export class GameScene extends Phaser.Scene {
             { x: 850, y: 250 }
         ]
 
-        const point = spawnPoints[Phaser.Math.Between(0,5)];
+    
+        const idx = Phaser.Math.Between(0,5);
+
+        if(this.isOnSpawn[idx])
+        {
+            return;
+        }
+
+        this.isOnSpawn[idx] = true;
+        const point = spawnPoints[idx];
 
         const weapon = new Weapon(this, point.x, point.y);
 
@@ -564,6 +578,7 @@ export class GameScene extends Phaser.Scene {
             this.physics.add.overlap(player.sprite, weapon.sprite, () => {
                 player.weapon = weapon.name;
                 weapon.sprite.destroy();
+                this.isOnSpawn[idx] = false;
             });
         });
     }
