@@ -85,7 +85,7 @@ export class SettingsScene extends BaseScene {
         const minRond = 3;
         const maxRond = 15;
 
-        this.crearTexto(210, 310, 'NUMERO DE RONDAS', { fontSize: '28px' }); 
+        this.crearTexto(210, 310, 'NUMERO DE RONDAS', 28); 
         const textoRond = this.crearTexto(210, 360, `${this.registry.get('ronda')}`, { fontSize: '32px' });
 
         this.crearBoton(210 - 130, 360, 70, 55, 8, '-', null,  () => {

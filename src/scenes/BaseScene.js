@@ -70,7 +70,7 @@ export class BaseScene extends Phaser.Scene {
             alto,
 
         );
-        const btn = this.add.container(x, y, [sprite])
+        this.add.container(x, y, [sprite])
             .setSize(ancho, alto)
             .setInteractive({ useHandCursor: true })
             .setScale(2.5)
@@ -114,5 +114,15 @@ export class BaseScene extends Phaser.Scene {
 
         return this.add.container(x, y, [spriteFondo, label]);
     };
+
+    flechaTecla(tecla) {
+        const simbolos = {
+            UP: '↑',
+            DOWN: '↓',
+            LEFT: '←',
+            RIGHT: '→',
+        };
+        return simbolos[tecla] || tecla;
+    }
 
 }
