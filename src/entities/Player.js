@@ -9,6 +9,8 @@ export class Player {
         this.isAttacking = false;
         this.isHit = false;
 
+        this.weapon = 'null';
+
         this.sprite = scene.physics.add.sprite(x, y, 'player', 'tilemap-characters_packed_0');
         this.sprite.body.setSize(32, 32);
         this.sprite.setCollideWorldBounds(false);
