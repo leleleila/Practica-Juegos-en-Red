@@ -21,5 +21,14 @@ export class Weapon {
         }
 
         this.sprite.body.setAllowGravity(false);
+
+        this.scene.tweens.add({
+            targets: this.sprite,
+            y: this.sprite.y -5,
+            duration: 1000,
+            ease: 'Sine.easeInOut',
+            yoyo: true,
+            repeat: -1
+        });
     }
 }
