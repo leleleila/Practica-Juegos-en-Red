@@ -25,6 +25,8 @@ export class GameScene extends Phaser.Scene {
         this.load.image('baston', 'assets/images/baston.png');
         this.load.image('shuriken', 'assets/images/shuriken.png');
 
+        this.load.image('fondo', 'assets/images/pagoda.png')
+
         this.load.spritesheet('player', 'assets/images/characters.png', {
             frameWidth: 42,
             frameHeight: 41
@@ -38,18 +40,93 @@ export class GameScene extends Phaser.Scene {
     }
 
     create() {
-   
+        this.add.image(this.scale.width / 2, this.scale.height / 2, 'fondo');
                
         //Crear plataformas solidas
         this.platforms = this.physics.add.staticGroup();
-        this.platforms.create(700, 500, 'tilemap');
 
+        //Plataformas de los arboles
+        let platSolid = this.add.rectangle(33,380,160,160).setOrigin(0,0);
+        this.physics.add.existing(platSolid, true);
+        this.platforms.add(platSolid);
+
+        platSolid = this.add.rectangle(768,380,160,160).setOrigin(0,0);
+        this.physics.add.existing(platSolid, true);
+        this.platforms.add(platSolid);
+
+        //Plataformas de la pagoda
+        
+        platSolid = this.add.rectangle(225,413,512,134).setOrigin(0,0);
+        this.physics.add.existing(platSolid, true);
+        this.platforms.add(platSolid);
+        
         //Crear plataformas semisolidas para ambos jugadores
         //Por como se manejan la acción de atravesarlas tenemos que hace hacer dos grupos
         this.semisolidPlatformsPlayer1 = this.physics.add.staticGroup();
-        this.semisolidPlatformsPlayer1.create(700,400, 'tilemap').setOrigin(0).refreshBody()
-        this.semisolidPlatformsPlayer1.create(20,400, 'tilemap').setOrigin(0).refreshBody()
 
+        //Plataformas flores
+        let platSemi = this.add.rectangle(41,223,94,7).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
+
+        platSemi = this.add.rectangle(85,281,58,7).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
+
+        platSemi = this.add.rectangle(20,334,66,7).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
+
+        platSemi = this.add.rectangle(165,318,76,7).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
+
+        platSemi = this.add.rectangle(199,256,76,7).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
+
+        platSemi = this.add.rectangle(206,201,57,7).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
+
+        platSemi = this.add.rectangle(875,333,66,7).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
+
+        platSemi = this.add.rectangle(720,319,76,7).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
+
+        platSemi = this.add.rectangle(818,281,58,7).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
+
+        platSemi = this.add.rectangle(685,256,76,7).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
+
+        platSemi = this.add.rectangle(827,222,93,7).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
+
+        platSemi = this.add.rectangle(698,201,57,7).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
+
+
+
+        //Plataformas pagoda
+        platSemi = this.add.rectangle(336,318,288,8).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
+
+        platSemi = this.add.rectangle(336,256,288,8).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
+
+        platSemi = this.add.rectangle(336,194,288,8).setOrigin(0,0);
+        this.physics.add.existing(platSemi,true);
+        this.semisolidPlatformsPlayer1.add(platSemi);
 
         this.semisolidPlatformsPlayer1.children.iterate((platform) => {
             platform.body.checkCollision.down = false;
@@ -59,13 +136,24 @@ export class GameScene extends Phaser.Scene {
 
 
         this.semisolidPlatformsPlayer2 = this.physics.add.staticGroup();
-        this.semisolidPlatformsPlayer2.create(700,400, 'tilemap').setOrigin(0).refreshBody()
+        this.semisolidPlatformsPlayer1.children.iterate((platform) => {
+            const copy = this.add.rectangle(
+                platform.x,
+                platform.y,
+                platform.width,
+                platform.height
+            ).setOrigin(0, 0);
+
+            this.physics.add.existing(copy, true);
+            this.semisolidPlatformsPlayer2.add(copy);
+        });
 
         this.semisolidPlatformsPlayer2.children.iterate((platform) => {
             platform.body.checkCollision.down = false;
             platform.body.checkCollision.right = false;
             platform.body.checkCollision.left = false;
         });
+
 
         this.deathzone = this.physics.add.group({
             key: 'olas',
@@ -182,7 +270,7 @@ export class GameScene extends Phaser.Scene {
             weaponTest.sprite.destroy();
         })
         this.physics.add.overlap(player2.sprite, weaponTest.sprite, () => {
-            player1.weapon = weaponTest.name;
+            player2.weapon = weaponTest.name;
             weaponTest.sprite.destroy();
         })
 
@@ -324,6 +412,11 @@ export class GameScene extends Phaser.Scene {
 
     // Para detectar si puedes atravesarla
     onPlatform(player, platform) {
+        if (player.onPlatform != null)
+        {
+            player.onPlatform.body.checkCollision.up = true;
+        }
+
         player.isOnPlatform = true;
         player.onPlatform = platform;
     }
