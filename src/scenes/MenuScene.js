@@ -20,14 +20,8 @@ export class MenuScene extends BaseScene {
         // Título
         this.add.image(480, 110, 'logo').setOrigin(0.5);
 
-        /*
-        this.add.text(480, 140, 'Rivals Through Ages', {
-            fontSize: '64px',
-            color: '#ffffff'
-        }).setOrigin(0.5);
-        */
-
-        this.crearBoton(480, 270, 260, 68, 8, 'Juego Local', 'GameScene');
+        // Botones
+        this.crearBoton(480, 270, 260, 68, 8, 'Juego Local', 'TutorialScene');
         this.crearBoton(480, 380, 260, 68, 8, 'Ajustes', 'SettingsScene');
         this.crearBoton(480, 480, 260, 68, 8, 'Creditos', 'CreditsScene');
 

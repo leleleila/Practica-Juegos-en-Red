@@ -18,13 +18,15 @@ export class ControlsScene extends BaseScene {
         this.crearTexto(480, 55, 'CONTROLES', '#000000', { fontSize: '46px' });
         this.crearTexto(480, 105, 'Haz clic en un boton y pulsa la nueva tecla', '#000000', { fontSize: '20px' });
 
-        // Inicializamos los controles por defecto ya que gameScene (donde se inicializan si no se cambian aqui) no se ha ejecutado todavia
+        // Inicializamos los controles por defecto ya que gameScene 
+        // (donde se inicializan si no se cambian aqui) no se ha ejecutado todavia
         if (!this.registry.get('controls')) {
             this.registry.set('controls', {
                 p1: { up: 'W', left: 'A', right: 'D', down: 'S', attack: 'SPACE'},
                 p2: { up: 'UP', left: 'LEFT', right: 'RIGHT', down: 'DOWN', attack: 'P'}
             });
         }
+
         const controles = this.registry.get('controls');
 
         // Columna para cada jugador
