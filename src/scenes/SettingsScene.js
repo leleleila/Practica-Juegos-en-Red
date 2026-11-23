@@ -75,17 +75,37 @@ export class SettingsScene extends BaseScene {
         const btnTeclas = this.crearBoton(210, 480, 390, 55, 8, 'PERSONALIZAR TECLAS', 'ControlsScene', null, '#000000');
         btnTeclas.getAt(1).setFontSize('30px');
         
-        this.crearTexto(210, 310, 'NUMERO DE RONDAS', { fontSize: '28px' });
-        const btnBajNumRondas = this.crearBoton(210 - 130, 360, 70, 55, 8, '-', null, '#000000');
-        const btnSubNumRondas = this.crearBoton(210 + 130, 360, 70, 55, 8, '+', null, '#000000');
+
+    
+      
+        if (!this.registry.get('ronda')) {
+            this.registry.set('ronda', 3);
+        } 
+
+        const minRond = 3;
+        const maxRond = 15;
+
+        this.crearTexto(210, 310, 'NUMERO DE RONDAS', { fontSize: '28px' }); 
+        const textoRond = this.crearTexto(210, 360, `${this.registry.get('ronda')}`, { fontSize: '32px' });
+
+        this.crearBoton(210 - 130, 360, 70, 55, 8, '-', null,  () => {
+            const rondaAct = this.registry.get('ronda');
+            const nuevaRonda = Math.max(minRond, rondaAct - 1);
+            this.registry.set('ronda', nuevaRonda);
+            textoRond.setText(`${nuevaRonda}`);
+        }, '#000000');
+
+        this.crearBoton(210 + 130, 360, 70, 55, 8, '+', null, () => {
+            const rondaAct = this.registry.get('ronda');
+            const nuevaRonda = Math.min(maxRond, rondaAct + 1);
+            this.registry.set('ronda', nuevaRonda);
+            textoRond.setText(`${nuevaRonda}`);
+        }, '#000000');
+
 
         //Botón volver al menú
         this.crearBotonDibujo(900, 480, 32, 32, 'MenuScene', null);
 
-    }
-
-       
-    
-
+    }   
     
 }

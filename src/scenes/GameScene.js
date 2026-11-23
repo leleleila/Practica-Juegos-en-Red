@@ -25,7 +25,7 @@ export class GameScene extends Phaser.Scene {
         this.load.image('baston', 'assets/images/baston.png');
         this.load.image('shuriken', 'assets/images/shuriken.png');
 
-        this.load.image('fondo', 'assets/images/pagoda.png')
+        this.load.image('escenario', 'assets/images/pagoda.png')
 
         this.load.spritesheet('player', 'assets/images/characters.png', {
             frameWidth: 42,
@@ -40,7 +40,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.image(this.scale.width / 2, this.scale.height / 2, 'fondo');
+        this.add.image(this.scale.width / 2, this.scale.height / 2, 'escenario');
                
         //Crear plataformas solidas
         this.platforms = this.physics.add.staticGroup();
@@ -257,6 +257,7 @@ export class GameScene extends Phaser.Scene {
         //Puntuación
         this.scoreLeft = this.add.text(400, 50, '0', { fontSize: '48px' }).setOrigin(0.5);
         this.scoreRight = this.add.text(608, 50, '0', { fontSize: '48px' }).setOrigin(0.5);
+
     }
 
     setUpPlayers() {
@@ -443,6 +444,14 @@ export class GameScene extends Phaser.Scene {
 
         this.scoreRight.setText(this.score.player1.toString());
         this.scoreLeft.setText(this.score.player2.toString());
+    
+        // Comprueba si algún jugador ha alcanzado el número de rondas puesto
+        const totalRond = this.registry.get('ronda') || 3;
+
+        if(this.score.player1 >= totalRond || this.score.player2 >= totalRond){
+            this.music.stop();
+            this.scene.start('GameOverScene');
+        }
     }
 
     //Ataque de un jugador
