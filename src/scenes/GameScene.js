@@ -9,6 +9,10 @@ export class GameScene extends Phaser.Scene {
     init() {
         this.players = new Map();
         this.inputMappings = [];
+        this.score = {
+            player1: 0,
+            player2: 0
+        };
     }
 
     preload() {
@@ -28,15 +32,28 @@ export class GameScene extends Phaser.Scene {
     }
 
     create() {
-        // Create platforms
+
+               
+        //Crear plataformas solidas
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(700, 500, 'tilemap');
 
-        // Create semisolid platforms
-        this.semisolidPlatforms = this.physics.add.staticGroup();
-        this.semisolidPlatforms.create(700, 400, 'tilemap').setOrigin(0).refreshBody();
+        //Crear plataformas semisolidas para ambos jugadores
+        //Por como se manejan la acción de atravesarlas tenemos que hace hacer dos grupos
+        this.semisolidPlatformsPlayer1 = this.physics.add.staticGroup();
+        this.semisolidPlatformsPlayer1.create(700,400, 'tilemap').setOrigin(0).refreshBody()
 
-        this.semisolidPlatforms.children.iterate((platform) => {
+        this.semisolidPlatformsPlayer1.children.iterate((platform) => {
+            platform.body.checkCollision.down = false;
+            platform.body.checkCollision.right = false;
+            platform.body.checkCollision.left = false;
+        });
+
+
+        this.semisolidPlatformsPlayer2 = this.physics.add.staticGroup();
+        this.semisolidPlatformsPlayer2.create(700,400, 'tilemap').setOrigin(0).refreshBody()
+
+        this.semisolidPlatformsPlayer2.children.iterate((platform) => {
             platform.body.checkCollision.down = false;
             platform.body.checkCollision.right = false;
             platform.body.checkCollision.left = false;
@@ -84,9 +101,18 @@ export class GameScene extends Phaser.Scene {
         });
         this.anims.create({
             key: 'jump',
-            frames: this.anims.generateFrameNumbers('player', { start: 10, end: 12 }),
-            frameRate: 40
-        });
+            frames: [{ key: 'player', frame: 12 }],
+            frameRate: 40,
+            }
+        )
+
+        this.anims.create(
+            {
+            key: 'katana',
+            frames: this.anims.generateFrameNumbers('player', { start: 0, end: 5 }),
+            frameRate: 24
+            }
+        )
 
         // Setup players
         this.setUpPlayers();
@@ -96,6 +122,10 @@ export class GameScene extends Phaser.Scene {
             this.scene.pause();
             this.scene.launch('PauseScene');
         });
+
+        //Puntuación
+        this.scoreLeft = this.add.text(400, 50, '0', { fontSize: '48px' }).setOrigin(0.5);
+        this.scoreRight = this.add.text(608, 50, '0', { fontSize: '48px' }).setOrigin(0.5);
     }
 
     setUpPlayers() {
@@ -105,46 +135,53 @@ export class GameScene extends Phaser.Scene {
         this.players.set(player1.id, player1);
         this.players.set(player2.id, player2);
 
+        player1.enemy = player2;
+        player2.enemy = player1;
+        
         this.physics.add.collider(player1.sprite, this.platforms);
         this.physics.add.collider(player2.sprite, this.platforms);
 
-        this.physics.add.collider(player1.sprite, this.semisolidPlatforms, this.onPlatform);
-        this.physics.add.collider(player2.sprite, this.semisolidPlatforms, this.onPlatform);
+        this.physics.add.collider(player1.sprite, this.semisolidPlatformsPlayer1, this.onPlatform);
+        this.physics.add.collider(player2.sprite, this.semisolidPlatformsPlayer2, this.onPlatform);
+
 
         this.physics.add.overlap(player1.sprite, this.deathzone, () => {
-            player1.sprite.body.reset(480, 0);
-        });
+            this.loseRound(player1);
+        })
         this.physics.add.overlap(player2.sprite, this.deathzone, () => {
-            player2.sprite.body.reset(480, 0);
-        });
+            this.loseRound(player2);
+        })
 
         const Keys = Phaser.Input.Keyboard.KeyCodes;
         const ctrlCambiados = this.registry.get('controls') || {
-            p1: { up: 'W', left: 'A', right: 'D' },
-            p2: { up: 'UP', left: 'LEFT', right: 'RIGHT' }
+            p1: { up: 'W', left: 'A', right: 'D', attack: 'SPACE', down: 'S' },
+            p2: { up: 'UP', left: 'LEFT', right: 'RIGHT', attack: 'P', down: 'DOWN' }
         };
 
         this.inputMappings = [
             {
                 player: player1,
                 up: Keys[ctrlCambiados.p1.up] || Keys.W,
-                down: Keys.S,
+                down: Keys[ctrlCambiados.p1.down] || Keys.S,
                 left: Keys[ctrlCambiados.p1.left] || Keys.A,
-                right: Keys[ctrlCambiados.p1.right] || Keys.D
+                right: Keys[ctrlCambiados.p1.right] || Keys.D,
+                attack: Keys[ctrlCambiados.p1.attack] || Keys.SPACE
             },
             {
                 player: player2,
                 up: Keys[ctrlCambiados.p2.up] || Keys.UP,
-                down: Keys.DOWN,
+                down: Keys[ctrlCambiados.p2.down] || Keys.DOWN,
                 left: Keys[ctrlCambiados.p2.left] || Keys.LEFT,
-                right: Keys[ctrlCambiados.p2.right] || Keys.RIGHT
+                right: Keys[ctrlCambiados.p2.right] || Keys.RIGHT,
+                attack: Keys[ctrlCambiados.p2.attack] || Keys.P
             }
         ].map(mapping => ({
             player: mapping.player,
             upKey: this.input.keyboard.addKey(mapping.up),
             downKey: this.input.keyboard.addKey(mapping.down),
             leftKey: this.input.keyboard.addKey(mapping.left),
-            rightKey: this.input.keyboard.addKey(mapping.right)
+            rightKey: this.input.keyboard.addKey(mapping.right),
+            attackKey: this.input.keyboard.addKey(mapping.attack)
         }));
     }
 
@@ -154,40 +191,79 @@ export class GameScene extends Phaser.Scene {
 
             player.sprite.setVelocityX(0);
 
+            //Movimiento Horizontal
             if (mapping.leftKey.isDown) {
                 player.sprite.setVelocityX(-player.speed);
                 player.sprite.setFlipX(false);
-                if (player.sprite.body.onFloor()) {
-                    player.sprite.anims.play('run', true);
-                }
-            } else if (mapping.rightKey.isDown) {
+
+            }else if (mapping.rightKey.isDown) {
                 player.sprite.setVelocityX(player.speed);
                 player.sprite.setFlipX(true);
-                if (player.sprite.body.onFloor()) {
-                    player.sprite.anims.play('run', true);
-                }
-            } else if (player.sprite.body.onFloor()) {
-                player.sprite.anims.play('idle', true);
             }
 
-            if (player.sprite.body.velocity.y > 0) {
-                player.sprite.anims.play('fall', true);
-            }
+
+
+            //Salto
 
             if (mapping.upKey.isDown && player.sprite.body.onFloor()) {
                 player.sprite.setVelocityY(-350);
-                player.sprite.anims.play('jump');
+            } 
+
+
+            //Atravesar plataforma semisolid
+            if (mapping.upKey.isDown && player.sprite.body.touching.down)
+            {
+                player.sprite.setVelocityY(-400);
+                if (player.sprite.isOnPlatform){
+                    player.sprite.onPlatform.body.checkCollision.up = true;
+                    player.sprite.isOnPlatform = false;
+                    player.sprite.onPlatform = null;
+                }
+                
+            }
+            if ((mapping.downKey.isDown && player.sprite.isOnPlatform)) {
+                player.sprite.onPlatform.body.checkCollision.up = false;
+            }
+            //Atacar
+            if (mapping.attackKey.isDown) {
+                if (!player.isAttacking)
+                {
+                    this.playerAttack(player);
+                }
             }
 
-            if (mapping.downKey.isDown && player.sprite.isOnPlatform) {
-                player.sprite.body.checkCollision.down = false;
-                player.sprite.y += 5;
-            } else {
-                player.sprite.body.checkCollision.down = true;
+
+            //Animaciones
+            if (!player.isAttacking){
+                if(!player.sprite.body.onFloor())
+                {
+                    if (player.sprite.body.velocity.y > 0)
+                    {
+                        player.sprite.anims.play('fall',true);
+                    } else{
+                        player.sprite.anims.play('jump',true);
+                    }
+                } else
+                {   
+                    if(mapping.rightKey.isDown || mapping.leftKey.isDown)
+                    {
+                        player.sprite.anims.play('run',true);
+                    } else{
+                        player.sprite.anims.play('idle',true);
+                    }
+                }
             }
 
-            if (!player.sprite.body.onFloor()) {
-                player.sprite.isOnPlatform = false;
+
+            //Mover la hitbox con el personaje
+            if (player.isAttacking && player.hitbox != null)
+            {
+                let offsetX = player.sprite.flipX ? 12 : -12;
+                let targetX = player.sprite.x + offsetX;
+                let targetY = player.sprite.y;
+
+                player.hitbox.setPosition(targetX, targetY);
+                player.hitbox.body.reset(targetX, targetY);
             }
         });
     }
@@ -196,5 +272,49 @@ export class GameScene extends Phaser.Scene {
     onPlatform(player, platform) {
         player.isOnPlatform = true;
         player.onPlatform = platform;
+    }
+
+    //Perder una ronda
+    loseRound(player) {
+        player.sprite.y -= 300
+        if (player.id === 'player1')
+        {
+            this.score.player2 += 1;
+        } else
+        {
+            this.score.player1 += 1;
+        }
+        this.scoreRight.setText(this.score.player1.toString());
+        this.scoreLeft.setText(this.score.player2.toString());
+    }
+
+    //Ataque de un jugador
+    playerAttack(player)
+    {
+        player.isAttacking = true;
+        player.sprite.anims.play('katana', true);
+
+        let offsetX = player.sprite.flipX ? 12 : -12; //El sprite del jugador se queda a un lado u otro
+        //Crear la hitbox
+        let hitbox = this.add.rectangle(player.sprite.x + offsetX,player.sprite.y,20,32);
+
+        this.physics.add.existing(hitbox, false);
+        hitbox.body.setAllowGravity(false);
+
+        this.physics.add.overlap(player.enemy.sprite, hitbox, () => {
+            this.loseRound(player.enemy);
+        })
+        
+        player.hitbox = hitbox;
+
+        player.sprite.once('animationcomplete', () => {
+            player.isAttacking = false;
+            if (player.hitbox)
+            {
+                player.hitbox.destroy();
+                player.hitbox = null;
+            }
+        });
+    
     }
 }

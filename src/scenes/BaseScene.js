@@ -59,4 +59,37 @@ export class BaseScene extends Phaser.Scene {
     return btn;
 };
 
+crearBotonDibujo = (x, y, ancho, alto, escenaDestino, onClick = null) =>{
+  
+    const sprite = this.add.sprite(
+          0,0,
+        'boton_volver',
+        null,
+        ancho,
+        alto,
+        
+    );
+    const btn = this.add.container(x, y, [sprite])
+        .setSize(ancho, alto)
+        .setInteractive({ useHandCursor: true })
+        .setScale(2.5)
+        .on('pointerover', () => {
+            sprite.setTint(0xdddddd);
+            
+        })
+        .on('pointerout', () => {
+            sprite.clearTint();
+            
+        })
+        .on('pointerdown', () => {
+           
+            if (typeof onClick === 'function') {
+                onClick();
+            }
+            if (escenaDestino) {
+                this.scene.start(escenaDestino);
+            }
+        });
+}
+
     }

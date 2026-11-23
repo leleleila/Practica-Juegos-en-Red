@@ -21,28 +21,32 @@ export class ControlsScene extends BaseScene {
         // Inicializamos los controles por defecto ya que gameScene (donde se inicializan si no se cambian aqui) no se ha ejecutado todavia
         if (!this.registry.get('controls')) {
             this.registry.set('controls', {
-                p1: { up: 'W', left: 'A', right: 'D' },
-                p2: { up: 'UP', left: 'LEFT', right: 'RIGHT' }
+                p1: { up: 'W', left: 'A', right: 'D', down: 'S', attack: 'SPACE'},
+                p2: { up: 'UP', left: 'LEFT', right: 'RIGHT', down: 'DOWN', attack: 'P'}
             });
         }
         const controles = this.registry.get('controls');
 
         // Columna para cada jugador
-        this.crearTexto(270, 165, 'Jugador 1', '#000000', { fontSize: '28px' });
-        this.crearTexto(690, 165, 'Jugador 2', '#000000', { fontSize: '28px' });
+        this.crearTexto(270, 145, 'Jugador 1', '#000000', { fontSize: '28px' });
+        this.crearTexto(690, 145, 'Jugador 2', '#000000', { fontSize: '28px' });
 
         // Botones Jugador 1 (columna izq)
-        this.crearBotonTecla(270, 230, 'Saltar', 'p1', 'up', controles);
-        this.crearBotonTecla(270, 300, 'Izq', 'p1', 'left', controles);
-        this.crearBotonTecla(270, 370, 'Der', 'p1', 'right', controles);
+        this.crearBotonTecla(270, 210, 'Saltar', 'p1', 'up', controles);
+        this.crearBotonTecla(270, 280, 'Izq', 'p1', 'left', controles);
+        this.crearBotonTecla(270, 350, 'Der', 'p1', 'right', controles);
+        this.crearBotonTecla(270, 420, 'Abajo', 'p1', 'down', controles);
+        this.crearBotonTecla(270, 490, 'Atacar', 'p1', 'attack',controles);
 
         // Botones Jugador 2 (columna dch)
-        this.crearBotonTecla(690, 230, 'Saltar', 'p2', 'up', controles);
-        this.crearBotonTecla(690, 300, 'Izq', 'p2', 'left', controles);
-        this.crearBotonTecla(690, 370, 'Der', 'p2', 'right', controles);
+        this.crearBotonTecla(690, 210, 'Saltar', 'p2', 'up', controles);
+        this.crearBotonTecla(690, 280, 'Izq', 'p2', 'left', controles);
+        this.crearBotonTecla(690, 350, 'Der', 'p2', 'right', controles);
+        this.crearBotonTecla(690, 420, 'Abajo', 'p2', 'down', controles);
+        this.crearBotonTecla(690, 490, 'Atacar', 'p2', 'attack', controles);
 
         // Botón volver a Ajustes
-        this.crearBoton(480, 475, 280, 60, 8, 'Volver', 'SettingsScene', null, '#000000');
+         this.crearBotonDibujo(900, 50, 32, 32, 'SettingsScene', null);
     }
 
 

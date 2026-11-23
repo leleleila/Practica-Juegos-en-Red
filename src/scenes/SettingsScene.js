@@ -9,6 +9,7 @@ export class SettingsScene extends BaseScene {
 // Cargamos sprites
     preload() {
         this.load.image('boton_sencillo', 'assets/images/botonsupersencillo.png');
+        this.load.image('boton_volver', 'assets/images/boton_volver.png');
     }
 
     create(){
@@ -27,11 +28,11 @@ export class SettingsScene extends BaseScene {
         this.sound.volume = this.registry.get('volume');
 
         // Volumen música
-        this.crearTexto(480, 160, 'Volumen Musica', { fontSize: '28px' });
-        const volText = this.crearTexto(480, 210, `${Math.round(this.sound.volume * 100)}%`, { fontSize: '32px' });
+        this.crearTexto(210, 160, 'VOLUMEN MUSICA', { fontSize: '28px' });
+        const volText = this.crearTexto(210, 210, `${Math.round(this.sound.volume * 100)}%`, { fontSize: '32px' });
 
         // Botón bajar volumen
-        this.crearBoton(480 - 130, 210, 70, 56, 8, ' - ', null, () => {
+        this.crearBoton(210 - 130, 210, 70, 55, 8, ' - ', null, () => {
             const actual = this.registry.get('volume');
             const nuevoVol = Math.max(0, +(actual - 0.1).toFixed(1));
             this.sound.volume = nuevoVol;
@@ -40,7 +41,7 @@ export class SettingsScene extends BaseScene {
         });
 
         // Botón subir volumen
-        this.crearBoton(480 + 130, 210, 70, 56, 8, ' + ', null, () => {
+        this.crearBoton(210 + 130, 210, 70, 55, 8, ' + ', null, () => {
             const actual = this.registry.get('volume');
             const nuevoVol = Math.min(1, +(actual + 0.1).toFixed(1));
             this.sound.volume = nuevoVol;
@@ -48,12 +49,38 @@ export class SettingsScene extends BaseScene {
             volText.setText(`${Math.round(nuevoVol * 100)}%`);
         });
 
-        // Botón que lleva a la pantalla de personalizar teclas
-        const btnTeclas = this.crearBoton(480, 320, 440, 64, 8, 'Cambiar teclas de control', 'ControlsScene', null, '#000000');
-        btnTeclas.getAt(1).setFontSize('24px');
+        // Volumen efectos de sonido
+        this.crearTexto(745, 160, 'VOLUMEN EFECTOS', { fontSize: '28px' });
+        const volumen = this.crearTexto(745, 210, `${Math.round(this.sound.volume * 100)}%`, { fontSize: '32px' });
 
-        // Botón volver al menú
-        this.crearBoton(480, 430, 280, 64, 8, 'Volver al Menu', 'MenuScene', null, '#000000');
+        // Botón bajar volumen
+        this.crearBoton(745 - 130, 210, 70, 55, 8, ' - ', null, () => {
+            const actual = this.registry.get('volume');
+            const nuevoVol = Math.max(0, +(actual - 0.1).toFixed(1));
+            this.sound.volume = nuevoVol;
+            this.registry.set('volume', nuevoVol);
+            volumen.setText(`${Math.round(nuevoVol * 100)}%`);
+        });
+
+        // Botón subir volumen
+        this.crearBoton(745 + 130, 210, 70, 55, 8, ' + ', null, () => {
+            const actual = this.registry.get('volume');
+            const nuevoVol = Math.min(1, +(actual + 0.1).toFixed(1));
+            this.sound.volume = nuevoVol;
+            this.registry.set('volume', nuevoVol);
+            volumen.setText(`${Math.round(nuevoVol * 100)}%`);
+        });
+
+        // Botón que lleva a la pantalla de personalizar teclas
+        const btnTeclas = this.crearBoton(210, 480, 390, 55, 8, 'PERSONALIZAR TECLAS', 'ControlsScene', null, '#000000');
+        btnTeclas.getAt(1).setFontSize('30px');
+        
+        this.crearTexto(210, 310, 'NUMERO DE RONDAS', { fontSize: '28px' });
+        const btnBajNumRondas = this.crearBoton(210 - 130, 360, 70, 55, 8, '-', null, '#000000');
+        const btnSubNumRondas = this.crearBoton(210 + 130, 360, 70, 55, 8, '+', null, '#000000');
+
+        //Botón volver al menú
+        this.crearBotonDibujo(900, 480, 32, 32, 'MenuScene', null);
 
     }
 
