@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "phaser": "^3.88.2",
-    "serve": "^10.0.2"
+    "serve": "^14.2.8"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^14.0.0",

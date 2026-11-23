@@ -20,9 +20,10 @@ export class GameScene extends Phaser.Scene {
         // Load assets
         this.load.image('tilemap', 'assets/images/tilemap_packed.png');
         this.load.image('olas', 'assets/images/olas_placeholder.png');
-        this.load.image('katana', 'assets/images/katana.png')
-        this.load.image('baston', 'assets/images/baston.png')
 
+        this.load.image('katana', 'assets/images/katana.png');
+        this.load.image('baston', 'assets/images/baston.png');
+        this.load.image('shuriken', 'assets/images/shuriken.png');
 
         this.load.spritesheet('player', 'assets/images/characters.png', {
             frameWidth: 42,
@@ -137,6 +138,24 @@ export class GameScene extends Phaser.Scene {
             frameRate: 24 
             }
         )
+        
+        this.anims.create(
+            {
+            key: 'shuriken',
+            frames: this.anims.generateFrameNumbers('player', { start: 31, end: 36 }),
+            frameRate: 24 
+            }
+        )
+
+        //Grupo para los proyectiles
+        this.shurikens = this.physics.add.group(
+            {
+                allowGravity: false
+            }
+        )
+        this.physics.add.collider(this.shurikens, this.platforms, (shuriken) =>{
+            shuriken.destroy();
+        })
 
         // Setup players
         this.setUpPlayers();
@@ -390,6 +409,26 @@ export class GameScene extends Phaser.Scene {
                         player.weapon = null;
                     }
                 });
+                break;
+            case 'shuriken':
+                player.isAttacking = true;
+                player.sprite.anims.play('shuriken', true);
+
+                player.sprite.once('animationcomplete', () => {
+
+                    const shuriken = this.shurikens.create(player.sprite.x + (player.sprite.flipX ? 20 : -20), player.sprite.y, 'shuriken');
+                    shuriken.setVelocityX(player.sprite.flipX ? 500 : -500);
+
+                    this.physics.add.overlap(player.enemy.sprite, shuriken, () =>{
+                        shuriken.destroy();
+                        this.loseRound(player.enemy);
+                    })
+
+                    player.isAttacking = false;
+                    player.weapon = null;
+
+                })
+
                 break;
             default:
                 break;
