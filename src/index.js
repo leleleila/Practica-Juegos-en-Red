@@ -4,6 +4,9 @@ import { MenuScene } from './scenes/MenuScene.js';
 import { PauseScene } from './scenes/PauseScene.js';
 import { SettingsScene } from './scenes/SettingsScene.js';
 import { ControlsScene } from './scenes/ControlsScene.js';
+import { GameOverScene } from './scenes/GameOverScene.js';
+import { CreditsScene } from './scenes/CreditsScene.js';
+import { TutorialScene } from './scenes/TutorialScene.js';
 
 const config = {
     type: Phaser.AUTO,      // WebGL if available; otherwise, Canvas
@@ -21,7 +24,7 @@ const config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
-    scene: [MenuScene, SettingsScene, ControlsScene, GameScene, PauseScene]      // The first scene starts automatically
+    scene: [MenuScene, SettingsScene, ControlsScene, GameScene, PauseScene, CreditsScene, TutorialScene, GameOverScene]      // The first scene starts automatically
 };
 
 const game = new Phaser.Game(config);
