@@ -23,7 +23,7 @@ export class ControlsScene extends BaseScene {
         if (!this.registry.get('controls')) {
             this.registry.set('controls', {
                 p1: { up: 'W', left: 'A', right: 'D', down: 'S', attack: 'SPACE'},
-                p2: { up: 'UP', left: 'LEFT', right: 'RIGHT', down: 'DOWN', attack: 'P'}
+                p2: { up: '↑', left: '←', right: '→', down: '↓', attack: 'P'}
             });
         }
 
