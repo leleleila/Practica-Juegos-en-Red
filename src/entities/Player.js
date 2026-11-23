@@ -8,6 +8,7 @@ export class Player {
         this.hitbox = null;
         this.isAttacking = false;
         this.isHit = false;
+        this.isInvincible = false;
 
         this.weapon = 'null';
 

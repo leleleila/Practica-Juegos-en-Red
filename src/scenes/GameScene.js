@@ -269,7 +269,7 @@ export class GameScene extends Phaser.Scene {
         this.isOnSpawn = [false,false,false,false,false,false];
 
         this.weaponTimer = this.time.addEvent({
-            delay: Phaser.Math.Between(1000,8000),
+            delay: Phaser.Math.Between(1000,4000),
             callback: this.spawnWeapon,
             callbackScope: this,
             loop: true
@@ -277,7 +277,7 @@ export class GameScene extends Phaser.Scene {
 
         this.powerUpActive = false;
         this.powerTimer = this.time.addEvent({
-            delay: Phaser.Math.Between(1000,8000),
+            delay: Phaser.Math.Between(1000,5000),
             callback: () => {
                 if(!this.powerUpActive)
                 {
@@ -504,7 +504,8 @@ export class GameScene extends Phaser.Scene {
                 hitbox.body.setAllowGravity(false);
 
                 this.physics.add.overlap(player.enemy.sprite, hitbox, () => {
-                    this.loseRound(player.enemy);
+                    if(!player.enemy.isInvincible)
+                        this.loseRound(player.enemy);
                 })
                 
                 player.hitbox = hitbox;
@@ -527,7 +528,8 @@ export class GameScene extends Phaser.Scene {
                 hitbox.body.setAllowGravity(false);
 
                 this.physics.add.overlap(player.enemy.sprite, hitbox, () => {
-                    this.loseRound(player.enemy);
+                    if(!player.enemy.isInvincible)
+                        this.loseRound(player.enemy);
                 })
                 
                 player.hitbox = hitbox;
@@ -553,7 +555,8 @@ export class GameScene extends Phaser.Scene {
 
                     this.physics.add.overlap(player.enemy.sprite, shuriken, () =>{
                         shuriken.destroy();
-                        this.loseRound(player.enemy);
+                        if(!player.enemy.isInvincible)
+                            this.loseRound(player.enemy);
                     })
 
                     player.isAttacking = false;
@@ -621,6 +624,18 @@ export class GameScene extends Phaser.Scene {
                     callbackScope: this
                 })
                 break;
+            
+            case 'shield':
+                player.isInvincible = true;
+                this.time.addEvent({
+                    delay: 5000,
+                    loop: false,
+                    callback: () => {
+                        player.isInvincible = false;
+                    },
+                    callbackScope: this
+                })
+            break;
         }
     }
 }
