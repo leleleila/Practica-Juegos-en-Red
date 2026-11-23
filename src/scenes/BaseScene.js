@@ -23,7 +23,7 @@ export class BaseScene extends Phaser.Scene {
         ancho,
         alto,
         margen, // izq
-        margen, // drcha
+        margen, // dcha
         margen, // arriba
         margen  // abajo
     );

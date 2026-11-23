@@ -29,6 +29,7 @@ export class MenuScene extends BaseScene {
 
         this.crearBoton(480, 270, 260, 68, 8, 'Juego Local', 'GameScene');
         this.crearBoton(480, 380, 260, 68, 8, 'Ajustes', 'SettingsScene');
+        this.crearBoton(480, 480, 260, 68, 8, 'Creditos', 'CreditsScene');
 
     }
 }
