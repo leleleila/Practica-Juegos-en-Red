@@ -10,12 +10,14 @@ export class MenuScene extends BaseScene {
     preload() {
         this.load.image('boton_sencillo', 'assets/images/botonsupersencillo.png');
         this.load.image('logo', 'assets/images/logo.png');
+        this.load.image('fondo', 'assets/images/fondo.png');
     }
 
     create() {
 
         // Fondo
-        this.cameras.main.setBackgroundColor('#91dfeb');
+        // this.cameras.main.setBackgroundColor('#91dfeb');
+        this.add.image(480, 270, 'fondo');
 
         // Título
         this.add.image(480, 110, 'logo').setOrigin(0.5);
