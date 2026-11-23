@@ -21,6 +21,8 @@ export class GameScene extends Phaser.Scene {
         this.load.image('tilemap', 'assets/images/tilemap_packed.png');
         this.load.image('olas', 'assets/images/olas_placeholder.png');
         this.load.image('katana', 'assets/images/katana.png')
+        this.load.image('baston', 'assets/images/baston.png')
+
 
         this.load.spritesheet('player', 'assets/images/characters.png', {
             frameWidth: 42,
@@ -35,7 +37,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     create() {
-
+   
                
         //Crear plataformas solidas
         this.platforms = this.physics.add.staticGroup();
@@ -128,6 +130,14 @@ export class GameScene extends Phaser.Scene {
             }
         )
 
+        this.anims.create(
+            {
+            key: 'baston',
+            frames: this.anims.generateFrameNumbers('player', { start: 37, end: 41 }),
+            frameRate: 24 
+            }
+        )
+
         // Setup players
         this.setUpPlayers();
 
@@ -149,11 +159,11 @@ export class GameScene extends Phaser.Scene {
         const weaponTest = new Weapon(this, 500, 300);
 
         this.physics.add.overlap(player1.sprite, weaponTest.sprite, () => {
-            player1.weapon = 'katana';
+            player1.weapon = weaponTest.name;
             weaponTest.sprite.destroy();
         })
         this.physics.add.overlap(player2.sprite, weaponTest.sprite, () => {
-            player1.weapon = 'katana';
+            player1.weapon = weaponTest.name;
             weaponTest.sprite.destroy();
         })
 
@@ -326,14 +336,41 @@ export class GameScene extends Phaser.Scene {
     //Ataque de un jugador
     playerAttack(player)
     {
-        switch(player.weapon){ 
+        let offsetX = player.sprite.flipX ? 12 : -12; //El sprite del jugador se queda a un lado u otro
+        let hitbox = this.add.rectangle(player.sprite.x + offsetX,player.sprite.y,20,32); //Hitbox ataques cuerpo a cuerpo
+        
+        switch(player.weapon){
+             
             case 'katana':
                 player.isAttacking = true;
                 player.sprite.anims.play('katana', true);
 
-                let offsetX = player.sprite.flipX ? 12 : -12; //El sprite del jugador se queda a un lado u otro
+                
                 //Crear la hitbox
-                let hitbox = this.add.rectangle(player.sprite.x + offsetX,player.sprite.y,20,32);
+                
+
+                this.physics.add.existing(hitbox, false);
+                hitbox.body.setAllowGravity(false);
+
+                this.physics.add.overlap(player.enemy.sprite, hitbox, () => {
+                    this.loseRound(player.enemy);
+                })
+                
+                player.hitbox = hitbox;
+
+                player.sprite.once('animationcomplete', () => {
+                    player.isAttacking = false;
+                    if (player.hitbox)
+                    {
+                        player.hitbox.destroy();
+                        player.hitbox = null;
+                        player.weapon = null;
+                    }
+                });
+                break;
+            case 'baston':
+                player.isAttacking = true;
+                player.sprite.anims.play('baston', true);
 
                 this.physics.add.existing(hitbox, false);
                 hitbox.body.setAllowGravity(false);

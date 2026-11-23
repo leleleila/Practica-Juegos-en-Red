@@ -11,8 +11,8 @@ export class Weapon {
                 this.name = 'katana';
                 break;
             default:
-                this.sprite = scene.physics.add.sprite(x, y, 'katana');
-                this.name = 'katana';
+                this.sprite = scene.physics.add.sprite(x, y, 'baston');
+                this.name = 'baston';
                 break;
         }
 
