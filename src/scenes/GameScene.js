@@ -1,6 +1,7 @@
  import Phaser from 'phaser';
 import { Player } from '../entities/Player';
 import { Weapon } from '../entities/Weapon';
+import { PowerUp } from '../entities/PowerUp';
 
 export class GameScene extends Phaser.Scene {
     constructor() {
@@ -24,6 +25,9 @@ export class GameScene extends Phaser.Scene {
         this.load.image('katana', 'assets/images/katana.png');
         this.load.image('baston', 'assets/images/baston.png');
         this.load.image('shuriken', 'assets/images/shuriken.png');
+
+        this.load.image('shield','assets/images/escudo.png');
+        this.load.image('speed','assets/images/frenetizante.png');
 
         this.load.image('escenario', 'assets/images/pagoda.png')
 
@@ -265,12 +269,32 @@ export class GameScene extends Phaser.Scene {
         this.isOnSpawn = [false,false,false,false,false,false];
 
         this.weaponTimer = this.time.addEvent({
-            delay: Phaser.Math.Between(3000,8000),
+            delay: Phaser.Math.Between(1000,8000),
             callback: this.spawnWeapon,
             callbackScope: this,
             loop: true
         })
 
+        this.powerUpActive = false;
+        this.powerTimer = this.time.addEvent({
+            delay: Phaser.Math.Between(1000,8000),
+            callback: () => {
+                if(!this.powerUpActive)
+                {
+                    this.powerUpActive = true;
+                    const powerUp = new PowerUp(this, 480, 100);
+                    this.players.forEach((player) => {
+                        this.physics.add.overlap(player.sprite, powerUp.sprite, () => {
+                            this.playerPowerUp(player,powerUp.name);
+                            powerUp.sprite.destroy();
+                            this.powerUpActive = false;
+                        });
+                    });
+                }
+            },
+            callbackScope: this,
+            loop: true
+        })
 
         //Puntuación
         this.scoreLeft = this.add.text(400, 50, '0', { fontSize: '48px' }).setOrigin(0.5);
@@ -581,5 +605,22 @@ export class GameScene extends Phaser.Scene {
                 this.isOnSpawn[idx] = false;
             });
         });
+    }
+
+    playerPowerUp(player, powerName){
+        switch(powerName)
+        {
+            case 'speed':
+                player.speed = 600;
+                this.time.addEvent({
+                    delay: 5000,
+                    loop: false,
+                    callback: () => {
+                        player.speed = 300
+                    },
+                    callbackScope: this
+                })
+                break;
+        }
     }
 }
