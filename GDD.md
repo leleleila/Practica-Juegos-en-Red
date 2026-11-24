@@ -81,7 +81,6 @@ Para dos personas jugando en el mismo dispositivo (multijugador local):
 | **Moverse a la izquierda** | A | ← |
 | **Moverse a la derecha** | D | → |
 | **Saltar** | W | ↑ |
-| **Bolsillo** | Mayús | O |
 | **Disparar** | Espacio | P |
 | **Pausa** | Esc | Esc |
 
@@ -135,12 +134,6 @@ Para dos personas jugando en el mismo dispositivo (multijugador local):
 ### **3.3.4. Sistema de puntuación**
 
 Cada partida consta de “x” número de rondas o eliminaciones que los jugadores pueden configurar a voluntad desde el menú. El número de eliminaciones que consigue cada jugador se va contabilizando hasta que acabe la partida. Esto ocurre cuando un jugador consigue tanta ventaja de rondas que la partida no puede ser remontada por su oponente. Es decir, las partidas son “al mejor de x rondas”, no “al primero que alcance x eliminaciones”. Una vez terminada, saldrá por pantalla cuántas rondas ha ganado cada jugador y, por tanto, cuál es el ganador final. No existe un límite de tiempo para las rondas. En vez de eso, el escenario y sus peligros se encargarán de eliminar a los jugadores una y otra vez si estos no consiguen entre ellos. 
-
-| Modo | Número de rondas |
-| :---: | :---: |
-| Fácil | 5 |
-| Normal | 9 |
-| Difícil | 15 |
 
 ## **3.4. Físicas y dificultad**
 
@@ -221,37 +214,34 @@ Cada escenario cuenta con su paleta de colores representativa acorde con su ambi
 
 | Pista | Escena | Estilo / ambiente | Fuente / licencia |
 | :---: | :---: | :---: | :---: |
-| *Getting Started* | Menú principal | Chiptune calmado | Pixabay, licencia creative commons |
-| *Pagoda Peak* | Escenario Japón Medieval | Chiptune que incorpora instrumentos tradicionales de la música japonesa, como el biwa y el taiko. | Pixabay, licencia creative commons |
-| *It’s High Noon* | Escenario Lejano Oeste | Chiptune acelerado con piano de salón típico de bandas sonoras del Lejano Oeste | Propia |
-| *Killer Music From Outer Space* | Escenario Espacio Exterior | Chiptune rápido, con vibra sci-fi. | Propia |
-| *See You Next Time* | Final de la partida | Chiptune calmado | Pixabay, licencia creative commons |
+| *world japan koto folk background music 124876* | Menú principal | Chiptune calmado | Pixabay, licencia creative commons |
+| *titulo-principal samurai lofium* | Escenario Japón Medieval | Chiptune que incorpora instrumentos tradicionales de la música japonesa, como el biwa y el taiko. | Pixabay, licencia creative commons |
+| *porcelana-year-of-tranquility* | Final de la partida | Chiptune calmado | Pixabay, licencia creative commons |
 
 ## **6.2. Efectos de sonido**
 
-Efectos del paquete rpg essentials sound efects, descargado de itch.io. Creador: Leohpaz.
+Efectos del paquete rpg essentials sound efects, descargado de itch.io.
+Creador: Leohpaz. Licencia: creative commons.
 
 | Efecto | Momento en el que se reproduce |
 | :---: | :---: |
-| Salto | Al pulsar la tecla de salto |
-| Golpe | Al recibir daño |
-| Ataque | Al utilizar un arma de cuerpo a cuerpo. Algunas armas de esta categoría cuentan con efectos de sonido propios. |
-| Disparo | Al disparar con un arma de fuego. El sonido puede variar dependiendo del arma. |
-| Recoger objeto | Al recoger un power up o un arma |
-| Botones de la interfaz | Al hacer clic |
+| Slash | Atacar con la espada o el bastón |
+| Fire explosion | Atacar con el cañón |
+| Wind | Atacar con el shuriken |
+| Absorb | Obtener el power up de escudo |
+| Speed up | Al obtener el power up de velocidad |
 
 # **7\. Interfaz y diagrama de flujo** {#7.-interfaz-y-diagrama-de-flujo}
 
 ## **7.1. Pantallas**
 
-- Pantalla de título  
-- Menú principal  
+- Pantalla de título/Menú Principal  
 - Pantalla de juego  
-- Ajustes del juego  
+- Ajustes del juego
+- Controles  
 - Final/Resumen de partida  
-- Créditos  
-- Pausa  
-- Pantallas de carga
+- Créditos
+- Ayuda  
 
 ## **7.2. Diagrama de flujo**
 
@@ -301,13 +291,8 @@ En la implementación realizada para esta práctica, a falta de varios escenario
 
 # **10\. Referencias y Anexos** {#10.-referencias}
 
-Inspiraciones para la banda sonora:
-
-- Melodías chiptune por Jonathan So: [https\://soundcloud.com/jonathan-so-988423341/sets/the-game-creators-pack-audio](https://soundcloud.com/jonathan-so-988423341/sets/the-game-creators-pack-audio)  
-- Melodías del lejano oeste: [https\://youtu.be/WKlcTG8GbB8?si=Xi\_eP7rpWFG5\_kr1](https://youtu.be/WKlcTG8GbB8?si=Xi_eP7rpWFG5_kr1)  
-- Melodía espacial: [Cozy Space Music — 6 Seamless Chiptune Loops (WAV) by Spaceyyy](https://aquumgifts.itch.io/cozy-space-music#:~:text=Six%20short%20chiptune%20tracks%20for%20sci-fi%20and%20arcade,effects%20to%20match%3A%20Cozy%20Space%20SFX%20%2846%20sounds%29.) 
-
-Melodías utilizadas: 
+Melodías utilizadas:
+ 
 - Escenario japonés: [https://pixabay.com/es/music/titulo-principal-samurai-lofium-292016/](https://pixabay.com/es/music/titulo-principal-samurai-lofium-292016/)
 - Pantalla final: [https://pixabay.com/es/music/porcelana-year-of-tranquility-184919/](https://pixabay.com/es/music/porcelana-year-of-tranquility-184919/)
 - Menú principal: [https://pixabay.com/music/world-japan-koto-folk-background-music-124876/](https://pixabay.com/music/world-japan-koto-folk-background-music-124876/)

@@ -39,7 +39,8 @@ Apartados principales:
 - [Sonido](GDD.md#6-sonido)
 - [Interfaz y diagrama de flujo](GDD.md#7-interfaz-y-diagrama-de-flujo)
 - [Comunicación y marketing](GDD.md#8-comunicación-y-marketing)
-- [Referencias](GDD.md#9-referencias)
+- [Contenido no implementado](GDD.md#9-contenido-no-implementado)
+- [Referencias](GDD.md#10-referencias)
 
 ---
 
@@ -48,6 +49,6 @@ Apartados principales:
 | Fase | Contenido | Estado |
 | :--- | :--- | :--- |
 | Fase 1 | Equipo, temática y GDD | ✅ Entregada (tag `fase-1`) |
-| Fase 2 | Juego en local | ✅ Entregada (tag `fase-2`) |
+| Fase 2 | Juego en local | ✅ Entregada (tag `fase-2`)  |
 | Fase 3 | API REST | ⏳ Pendiente |
 | Fase 4 | WebSockets | ⏳ Pendiente |
