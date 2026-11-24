@@ -25,10 +25,6 @@ export class GameScene extends Phaser.Scene {
         this.load.image('katana', 'assets/images/katana.png');
         this.load.image('baston', 'assets/images/baston.png');
         this.load.image('shuriken', 'assets/images/shuriken.png');
-        this.load.image('canon', 'assets/images/canon.png');
-
-        this.load.image('bala','assets/images/bala.png');
-        this.load.image('shuriken-proj', 'assets/images/shuriken-proj.png');
 
         this.load.image('shield','assets/images/escudo.png');
         this.load.image('speed','assets/images/frenetizante.png');
@@ -246,22 +242,14 @@ export class GameScene extends Phaser.Scene {
             frameRate: 24 
             }
         )
-        
-        this.anims.create(
-            {
-            key: 'canon',
-            frames: this.anims.generateFrameNumbers('player', { start: 26, end: 30 }),
-            frameRate: 24 
-            }
-        )
 
         //Grupo para los proyectiles
-        this.proyectiles = this.physics.add.group(
+        this.shurikens = this.physics.add.group(
             {
                 allowGravity: false
             }
         )
-        this.physics.add.collider(this.proyectiles, this.platforms, (shuriken) =>{
+        this.physics.add.collider(this.shurikens, this.platforms, (shuriken) =>{
             shuriken.destroy();
         })
 
@@ -382,12 +370,10 @@ export class GameScene extends Phaser.Scene {
             if (mapping.leftKey.isDown) {
                 player.sprite.setVelocityX(-player.speed);
                 player.sprite.setFlipX(false);
-                player.sprite.body.setOffset(20,12);
 
             }else if (mapping.rightKey.isDown) {
                 player.sprite.setVelocityX(player.speed);
                 player.sprite.setFlipX(true);
-                player.sprite.body.setOffset(10,12);
             }
 
 
@@ -549,7 +535,7 @@ export class GameScene extends Phaser.Scene {
                     if(!player.enemy.isInvincible)
                         this.loseRound(player.enemy);
                 })
-            
+                
                 player.hitbox = hitbox;
 
                 player.sprite.once('animationcomplete', () => {
@@ -568,34 +554,11 @@ export class GameScene extends Phaser.Scene {
 
                 player.sprite.once('animationcomplete', () => {
 
-                    const shuriken = this.proyectiles.create(player.sprite.x + (player.sprite.flipX ? 20 : -20), player.sprite.y, 'shuriken-proj');
+                    const shuriken = this.shurikens.create(player.sprite.x + (player.sprite.flipX ? 20 : -20), player.sprite.y, 'shuriken');
                     shuriken.setVelocityX(player.sprite.flipX ? 500 : -500);
-                    shuriken.setAngularVelocity(500);
-                    shuriken.setScale(2,2);
 
                     this.physics.add.overlap(player.enemy.sprite, shuriken, () =>{
                         shuriken.destroy();
-                        if(!player.enemy.isInvincible)
-                            this.loseRound(player.enemy);
-                    })
-
-                    player.isAttacking = false;
-                    player.weapon = null;
-
-                })
-
-                break;
-            case 'canon':
-                player.isAttacking = true;
-                player.sprite.anims.play('canon', true);
-
-                player.sprite.once('animationcomplete', () => {
-
-                    const bala = this.proyectiles.create(player.sprite.x + (player.sprite.flipX ? 20 : -20), player.sprite.y, 'bala');
-                    bala.setVelocityX(player.sprite.flipX ? 800 : -800);
-
-                    this.physics.add.overlap(player.enemy.sprite, bala, () =>{
-                        bala.destroy();
                         if(!player.enemy.isInvincible)
                             this.loseRound(player.enemy);
                     })
