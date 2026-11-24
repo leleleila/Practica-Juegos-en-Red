@@ -38,15 +38,19 @@ export class MenuScene extends BaseScene {
         this.crearBoton(480, 490, 260, 63, 8, 'Ayuda', 'TutorialScene');
         
 
-        //Música de menú
+        // Música de menú (solo se crea si no está sonando ya)
         const savedVolume = this.registry.get('volume') !== undefined ? this.registry.get('volume') : 1;
-        this.sound.volume = savedVolume;
+        const existente = this.sound.get('pausa');
 
-        if (!this.sound.get('pausa') || !this.sound.get('pausa').isPlaying) {
-            this.music = this.sound.add('pausa', { loop: true });
+        if (!existente) {
+            this.music = this.sound.add('pausa', { loop: true, volume: savedVolume });
             this.music.play();
         } else {
-            this.music = this.sound.get('pausa');
+            this.music = existente;
+            this.music.setVolume(savedVolume);
+            if (!this.music.isPlaying) {
+                this.music.play();
+            }
         }
 
        

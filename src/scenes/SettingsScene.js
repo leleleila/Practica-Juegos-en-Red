@@ -25,49 +25,54 @@ export class SettingsScene extends BaseScene {
         if(this.registry.get('volume')===undefined){
             this.registry.set('volume', 1);
         }
-        this.sound.volume = this.registry.get('volume');
+
+        if (this.registry.get('sfxVolume') === undefined) {
+            this.registry.set('sfxVolume', 1);
+        }
 
         // Volumen música
+        // Volumen música
         this.crearTexto(210, 160, 'VOLUMEN MUSICA', '#000000', '28px');
-        const volText = this.crearTexto(210, 210, `${Math.round(this.sound.volume * 100)}%`, { fontSize: '32px' });
+        const volText = this.crearTexto(210, 210, `${Math.round(this.registry.get('volume') * 100)}%`, '#000000', '32px');
 
-        // Botón bajar volumen
         this.crearBoton(210 - 130, 210, 70, 55, 8, ' - ', null, () => {
             const actual = this.registry.get('volume');
             const nuevoVol = Math.max(0, +(actual - 0.1).toFixed(1));
-            this.sound.volume = nuevoVol;
             this.registry.set('volume', nuevoVol);
             volText.setText(`${Math.round(nuevoVol * 100)}%`);
+
+            // Actualiza en tiempo real la música que esté sonando
+            const musicaMenu = this.sound.get('pausa');
+            if (musicaMenu) musicaMenu.setVolume(nuevoVol);
         });
 
-        // Botón subir volumen
         this.crearBoton(210 + 130, 210, 70, 55, 8, ' + ', null, () => {
             const actual = this.registry.get('volume');
             const nuevoVol = Math.min(1, +(actual + 0.1).toFixed(1));
-            this.sound.volume = nuevoVol;
             this.registry.set('volume', nuevoVol);
             volText.setText(`${Math.round(nuevoVol * 100)}%`);
+
+            // Actualiza en tiempo real la música que esté sonando
+            const musicaMenu = this.sound.get('pausa');
+            if (musicaMenu) musicaMenu.setVolume(nuevoVol);
         });
+    
 
         // Volumen efectos de sonido
-        this.crearTexto(745, 160, 'VOLUMEN EFECTOS', '#000000','28px' );
-        const volumen = this.crearTexto(745, 210, `${Math.round(this.sound.volume * 100)}%`, { fontSize: '32px' });
+        this.crearTexto(745, 160, 'VOLUMEN EFECTOS', '#000000', '28px');
+        const volumen = this.crearTexto(745, 210, `${Math.round(this.registry.get('sfxVolume') * 100)}%`, '#000000', '32px');
 
-        // Botón bajar volumen
         this.crearBoton(745 - 130, 210, 70, 55, 8, ' - ', null, () => {
-            const actual = this.registry.get('volume');
+            const actual = this.registry.get('sfxVolume');
             const nuevoVol = Math.max(0, +(actual - 0.1).toFixed(1));
-            this.sound.volume = nuevoVol;
-            this.registry.set('volume', nuevoVol);
+            this.registry.set('sfxVolume', nuevoVol);
             volumen.setText(`${Math.round(nuevoVol * 100)}%`);
         });
 
-        // Botón subir volumen
         this.crearBoton(745 + 130, 210, 70, 55, 8, ' + ', null, () => {
-            const actual = this.registry.get('volume');
+            const actual = this.registry.get('sfxVolume');
             const nuevoVol = Math.min(1, +(actual + 0.1).toFixed(1));
-            this.sound.volume = nuevoVol;
-            this.registry.set('volume', nuevoVol);
+            this.registry.set('sfxVolume', nuevoVol);
             volumen.setText(`${Math.round(nuevoVol * 100)}%`);
         });
 

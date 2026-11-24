@@ -13,8 +13,7 @@ export class PauseScene extends BaseScene {
         this.crearTexto(480, 200 , 'Juego Pausado', '#ffffff', '50px');
 
         const savedVolume = this.registry.get('volume') !== undefined ? this.registry.get('volume') : 1;
-        this.sound.volume = savedVolume;
-        this.music = this.sound.add('pausa', { loop: true });
+        this.music = this.sound.add('pausa', { loop: true, volume: savedVolume });
         this.music.play();
 
         // Botón reanudar

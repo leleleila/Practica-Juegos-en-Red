@@ -16,8 +16,8 @@ export class HelpScene extends BaseScene {
 
         // Lista de texto tarjetas 
         this.tarjetas = [
-            'OBJETIVO \n\n Recoge armas del escenario \n y pulsa la tecla de ataque \n para matar a tu enemigo y \n ganar la ronda. \n\n (1/3)',
-            'CUIDADO \n\nLas olas suben poco a poco \n y reducen el espacio seguro. \n\n (2/3)',
+            'OBJETIVO \n\n Recoge armas por el escenario \n y pulsa la tecla de ataque \n para matar a tu enemigo y \n ganar la ronda. \n\n (1/3)',
+            'CUIDADO \n\nLas olas suben poco a poco \n y reducen el espacio seguro. \n Pero puedes atravesar por arriba\n y por abajo las plataformas finas\n\n (2/3)',
             'POWER-UPS Y VICTORIA\n\nCoge Power-ups para tener ventaja.\nEl jugador que gane más rondas,\n es el ganador de la partida. \n\n (3/3)'
         ];
 
