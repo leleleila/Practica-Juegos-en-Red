@@ -4,7 +4,7 @@ export class Weapon {
     constructor(scene, x, y) {
         this.scene = scene;
         
-        switch(Phaser.Math.Between(0,2))
+        switch(Phaser.Math.Between(0,3))
         {
             case 1:
                 this.sprite = scene.physics.add.sprite(x, y, 'katana');
@@ -13,6 +13,10 @@ export class Weapon {
             case 2:
                 this.sprite = scene.physics.add.sprite(x, y, 'shuriken');
                 this.name = 'shuriken';
+                break;
+            case 3:
+                this.sprite = scene.physics.add.sprite(x, y, 'canon');
+                this.name = 'canon';
                 break;
             default:
                 this.sprite = scene.physics.add.sprite(x, y, 'baston');
