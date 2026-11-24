@@ -15,23 +15,23 @@ export class ControlsScene extends BaseScene {
         this.cameras.main.setBackgroundColor('#91dfeb');
 
         // Título
-        this.crearTexto(480, 55, 'CONTROLES', { fontSize: '46px' });
-        this.crearTexto(480, 105, 'Haz clic en un boton y pulsa la nueva tecla', { fontSize: '20px' });
+        this.crearTexto(480, 55, 'CONTROLES', '#000000', '40px' );
+        this.crearTexto(480, 105, 'Haz clic en un boton y pulsa la nueva tecla', '#000000', '20px');
 
         // Inicializamos los controles por defecto ya que gameScene 
         // (donde se inicializan si no se cambian aqui) no se ha ejecutado todavia
         if (!this.registry.get('controls')) {
             this.registry.set('controls', {
                 p1: { up: 'W', left: 'A', right: 'D', down: 'S', attack: 'SPACE'},
-                p2: { up: 'UP', left: 'LEFT', right: 'RIGHT', down: 'DOWN', attack: 'P'}
+                p2: { up: '↑', left: '←', right: '→', down: '↓', attack: 'P'}
             });
         }
 
         const controles = this.registry.get('controls');
 
         // Columna para cada jugador
-        this.crearTexto(270, 145, 'Jugador 1', { fontSize: '28px' });
-        this.crearTexto(690, 145, 'Jugador 2', { fontSize: '28px' });
+        this.crearTexto(270, 145, 'Jugador 1', '#000000', '28px');
+        this.crearTexto(690, 145, 'Jugador 2', '#000000', '28px');
 
         // Botones Jugador 1 (columna izq)
         this.crearBotonTecla(270, 210, 'Saltar', 'p1', 'up', controles);
@@ -55,7 +55,7 @@ export class ControlsScene extends BaseScene {
     crearBotonTecla(x, y, accion, jugador, direccion, controles) {
         const boton = this.crearBoton(
             x, y, 310, 54, 8,
-            `${accion}: ${controles[jugador][direccion]}`,
+           `${accion}: ${this.flechaTecla(controles[jugador][direccion])}`,
             null, //null como escena de destino, para no cambiar de escena
             () => {
                 const texto = boton.getAt(1);
@@ -65,7 +65,7 @@ export class ControlsScene extends BaseScene {
                     const nuevaTecla = this.formatearTecla(event);
                     controles[jugador][direccion] = nuevaTecla;
                     this.registry.set('controls', controles);
-                    texto.setText(`${accion}: ${nuevaTecla}`);
+                    texto.setText(`${accion}: ${this.flechaTecla(nuevaTecla)}`);
                 });
             }
         );
@@ -79,4 +79,5 @@ export class ControlsScene extends BaseScene {
         if (event.key.startsWith('Arrow')) return event.key.replace('Arrow', '').toUpperCase();
         return event.key.toUpperCase();
     }
+
 }

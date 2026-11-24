@@ -481,9 +481,8 @@ export class GameScene extends Phaser.Scene {
 
         if (diferencia >= rondasRestantes || this.score.player1 >= totalRond || this.score.player2 >= totalRond) { //Mantengo las otras condiciones por si acaso
             this.music.stop();
-            this.scene.start('GameOverScene');
-        };
-
+            this.scene.start('GameOverScene', {score : this.score});
+        }
     }
 
 
