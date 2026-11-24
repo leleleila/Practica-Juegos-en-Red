@@ -17,6 +17,7 @@ export class GameOverScene extends BaseScene {
             frameWidth : 256,
             frameHeight: 256
         });
+        this.load.audio('victoria', 'assets/audio/victoria.mp3');
     }
  
  //Botón volver al menú
@@ -50,7 +51,21 @@ export class GameOverScene extends BaseScene {
         this.crearTexto(480, 430, textoGanador, '#000000', '30px');
         // Marcador final
         this.crearTexto(480, 510, `${this.score.player1}  -  ${this.score.player2}`, '#000000', '42px' );
+    
+    const savedVolume = this.registry.get('volume') !== undefined ? this.registry.get('volume') : 1;
+        this.sound.volume = savedVolume;
+        this.music = this.sound.add('victoria', { loop: true });
+        this.music.play();
 
+    //Botón de volver al menú principal
     this.crearBotonDibujo(900, 480, 32, 32, 'MenuScene', null);
+
+    // Parar y destruir la música automáticamente al salir de GameOverScene
+        this.events.once('shutdown', () => {
+            if (this.music) {
+                this.music.stop();
+                this.music.destroy();
+            }
+        });
  }
 }

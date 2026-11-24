@@ -32,7 +32,7 @@ export class CreditsScene extends BaseScene {
 
         this.crearBotonNoInteractivo(480, 440, 230, 40, 8, 'Sonido', '#000000', '28px');
         //this.crearTexto(480, 440, 'Sonido', '#000000', '28px');
-            this.crearTexto(480, 490, 'Aqui ponemos de donde hemos cogido la musica y los efectos de sonido', '#000000', '18px');
+            this.crearTexto(480, 490, 'pixabay.com', '#000000', '18px');
 
         //Botón volver al menú
         this.crearBotonDibujo(900, 480, 32, 32, 'MenuScene', null);

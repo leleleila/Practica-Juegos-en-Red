@@ -13,6 +13,7 @@ export class MenuScene extends BaseScene {
         this.load.image('fondo', 'assets/images/fondo.png');
         this.load.audio('gameplay', 'assets/audio/gameplay.mp3');
         this.load.audio('pausa', 'assets/audio/pausa.mp3');
+        
     }
 
     create() {
@@ -25,15 +26,17 @@ export class MenuScene extends BaseScene {
         this.add.image(480, 110, 'logo').setOrigin(0.5);
 
         // Botones
-        this.crearBoton(480, 280, 260, 68, 8, 'Juego Local', 'TutorialScene', () => {
+        this.crearBoton(480, 250, 260, 63, 8, 'Juego Local', 'TutorialScene', () => {
             if (this.music) {
                 this.music.stop();
                 this.music.destroy();
             }
         });
 
-        this.crearBoton(480, 380, 260, 68, 8, 'Ajustes', 'SettingsScene');
-        this.crearBoton(480, 480, 260, 68, 8, 'Creditos', 'CreditsScene');
+        this.crearBoton(480, 330, 260, 63, 8, 'Ajustes', 'SettingsScene');
+        this.crearBoton(480, 410, 260, 63, 8, 'Creditos', 'CreditsScene');
+        this.crearBoton(480, 490, 260, 63, 8, 'Ayuda', 'TutorialScene');
+        
 
         //Música de menú
         const savedVolume = this.registry.get('volume') !== undefined ? this.registry.get('volume') : 1;
