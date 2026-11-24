@@ -40,6 +40,11 @@ export class GameScene extends Phaser.Scene {
 
         // Hit sound
         this.load.audio('hit', 'assets/audio/hit.mp3');
+        this.load.audio('canon','assets/audio/canon.wav');
+        this.load.audio('shield','assets/audio/shield.wav');
+        this.load.audio('shuriken','assets/audio/shuriken.wav');
+        this.load.audio('slash','assets/audio/slash.wav');
+        this.load.audio('speed','assets/audio/speed.wav');
 
         // Background music
         this.load.audio('gameplay', 'assets/audio/gameplay.mp3');
@@ -522,6 +527,10 @@ export class GameScene extends Phaser.Scene {
                 this.physics.add.existing(hitbox, false);
                 hitbox.body.setAllowGravity(false);
 
+                //Sonido
+                const soundKat = this.sound.add('slash');
+                soundKat.play();
+
                 this.physics.add.overlap(player.enemy.sprite, hitbox, () => {
                     if (!player.enemy.isInvincible)
                         this.loseRound(player.enemy);
@@ -545,6 +554,9 @@ export class GameScene extends Phaser.Scene {
                 this.physics.add.existing(hitbox, false);
                 hitbox.body.setAllowGravity(false);
 
+                const soundBas = this.sound.add('slash');
+                soundBas.play();
+
                 this.physics.add.overlap(player.enemy.sprite, hitbox, () => {
                     if (!player.enemy.isInvincible)
                         this.loseRound(player.enemy);
@@ -564,6 +576,9 @@ export class GameScene extends Phaser.Scene {
             case 'shuriken':
                 player.isAttacking = true;
                 player.sprite.anims.play(`${tex}_shuriken`, true);
+
+                const soundShur = this.sound.add('shuriken');
+                soundShur.play();
 
                 player.sprite.once('animationcomplete', () => {
 
@@ -587,6 +602,9 @@ export class GameScene extends Phaser.Scene {
                 case 'canon':
                     player.isAttacking = true;
                     player.sprite.anims.play(`${tex}_canon`, true);
+
+                    const soundCan = this.sound.add('canon');
+                    soundCan.play();
 
                     player.sprite.once('animationcomplete', () => {
 
@@ -653,6 +671,8 @@ export class GameScene extends Phaser.Scene {
         switch (powerName) {
             case 'speed':
                 player.speed = 600;
+                const soundSpeed = this.sound.add('speed');
+                soundSpeed.play();
                 this.time.addEvent({
                     delay: 5000,
                     loop: false,
@@ -665,6 +685,8 @@ export class GameScene extends Phaser.Scene {
 
             case 'shield':
                 player.isInvincible = true;
+                const soundShield = this.sound.add('shield');
+                soundShield.play();
                 this.time.addEvent({
                     delay: 5000,
                     loop: false,
