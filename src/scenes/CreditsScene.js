@@ -18,7 +18,7 @@ export class CreditsScene extends BaseScene {
         
         //this.crearTexto(480, 70, 'CRÉDITOS', '100px' );
 
-        this.crearBotonNoInteractivo(480, 60, 230, 40, 8, 'Programación', '#000000', '36px');
+        this.crearBotonNoInteractivo(480, 60, 260, 40, 8, 'Programación', '#000000', '36px');
         //this.crearTexto(480, 70, 'Programación', '#000000','28px' );
             this.crearTexto(480, 110, 'Iván Domingo Reyes', '#000000', '18px');
             this.crearTexto(480, 150, 'Leila Aabbouz Chillada', '#000000', '18px');

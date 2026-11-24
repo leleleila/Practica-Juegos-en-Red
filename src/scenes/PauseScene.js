@@ -10,7 +10,7 @@ export class PauseScene extends BaseScene {
         this.add.rectangle(480, 270, 800, 600, 0x000000, 0.7);
         
         // Título juego pausado
-        this.crearTexto(480, 200, 'Juego Pausado', '#ffffff', { fontSize: '64px' });
+        this.crearTexto(480, 200, 'Juego Pausado', '#ffffff', '64px' );
 
         // Botón reanudar
         this.crearBoton(480, 320, 280, 64, 8, 'Reanudar', null, () => {
