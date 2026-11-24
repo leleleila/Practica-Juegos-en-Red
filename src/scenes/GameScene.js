@@ -382,10 +382,12 @@ export class GameScene extends Phaser.Scene {
             if (mapping.leftKey.isDown) {
                 player.sprite.setVelocityX(-player.speed);
                 player.sprite.setFlipX(false);
+                player.sprite.body.setOffset(20,12);
 
             }else if (mapping.rightKey.isDown) {
                 player.sprite.setVelocityX(player.speed);
                 player.sprite.setFlipX(true);
+                player.sprite.body.setOffset(10,12);
             }
 
 
