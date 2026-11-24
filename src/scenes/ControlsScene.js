@@ -23,7 +23,7 @@ export class ControlsScene extends BaseScene {
         if (!this.registry.get('controls')) {
             this.registry.set('controls', {
                 p1: { up: 'W', left: 'A', right: 'D', down: 'S', attack: 'SPACE'},
-                p2: { up: 'UP', left: 'LEFT', right: 'RIGHT', down: 'DOWN', attack: 'P'}
+                p2: { up: '↑', left: '←', right: '→', down: '↓', attack: 'P'}
             });
         }
 
@@ -55,7 +55,7 @@ export class ControlsScene extends BaseScene {
     crearBotonTecla(x, y, accion, jugador, direccion, controles) {
         const boton = this.crearBoton(
             x, y, 310, 54, 8,
-            `${accion}: ${controles[jugador][direccion]}`,
+           `${accion}: ${this.flechaTecla(controles[jugador][direccion])}`,
             null, //null como escena de destino, para no cambiar de escena
             () => {
                 const texto = boton.getAt(1);
@@ -65,7 +65,7 @@ export class ControlsScene extends BaseScene {
                     const nuevaTecla = this.formatearTecla(event);
                     controles[jugador][direccion] = nuevaTecla;
                     this.registry.set('controls', controles);
-                    texto.setText(`${accion}: ${nuevaTecla}`);
+                    texto.setText(`${accion}: ${this.flechaTecla(nuevaTecla)}`);
                 });
             }
         );
@@ -79,4 +79,5 @@ export class ControlsScene extends BaseScene {
         if (event.key.startsWith('Arrow')) return event.key.replace('Arrow', '').toUpperCase();
         return event.key.toUpperCase();
     }
+
 }
