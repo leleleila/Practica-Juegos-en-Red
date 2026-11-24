@@ -99,7 +99,7 @@ export class GameScene extends Phaser.Scene {
 
         this.anims.create(
             {
-            key: '${key}_canon',
+            key: `${key}_canon`,
             frames: this.anims.generateFrameNumbers(key, { start: 26, end: 30 }),
             frameRate: 24 
             }
@@ -578,24 +578,24 @@ export class GameScene extends Phaser.Scene {
                 break;
 
                 case 'canon':
-                player.isAttacking = true;
-                player.sprite.anims.play('${tex}_canon', true);
+                    player.isAttacking = true;
+                    player.sprite.anims.play(`${tex}_canon`, true);
 
-                player.sprite.once('animationcomplete', () => {
+                    player.sprite.once('animationcomplete', () => {
 
-                    const bala = this.proyectiles.create(player.sprite.x + (player.sprite.flipX ? 20 : -20), player.sprite.y, 'bala');
-                    bala.setVelocityX(player.sprite.flipX ? 800 : -800);
+                        const bala = this.proyectiles.create(player.sprite.x + (player.sprite.flipX ? 20 : -20), player.sprite.y, 'bala');
+                        bala.setVelocityX(player.sprite.flipX ? 800 : -800);
 
-                    this.physics.add.overlap(player.enemy.sprite, bala, () =>{
-                        bala.destroy();
-                        if(!player.enemy.isInvincible)
-                            this.loseRound(player.enemy);
+                        this.physics.add.overlap(player.enemy.sprite, bala, () =>{
+                            bala.destroy();
+                            if(!player.enemy.isInvincible)
+                                this.loseRound(player.enemy);
+                        })
+
+                        player.isAttacking = false;
+                        player.weapon = null;
+
                     })
-
-                    player.isAttacking = false;
-                    player.weapon = null;
-
-                })
 
                 break;
             default:
