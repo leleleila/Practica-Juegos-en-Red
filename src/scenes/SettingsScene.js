@@ -72,7 +72,7 @@ export class SettingsScene extends BaseScene {
         });
 
         // Botón que lleva a la pantalla de personalizar teclas
-        const btnTeclas = this.crearBoton(210, 480, 390, 55, 8, 'PERSONALIZAR TECLAS', 'ControlsScene', null, '#000000');
+        const btnTeclas = this.crearBoton(745, 360, 390, 55, 8, 'PERSONALIZAR TECLAS', 'ControlsScene', null, '#000000');
         btnTeclas.getAt(1).setFontSize('30px');
     
       

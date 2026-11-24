@@ -10,16 +10,29 @@ export class PauseScene extends BaseScene {
         this.add.rectangle(480, 270, 800, 600, 0x000000, 0.7);
         
         // Título juego pausado
-       this.crearTexto(480, 200 , 'Juego Pausado', '#ffffff', '50px');
+        this.crearTexto(480, 200 , 'Juego Pausado', '#ffffff', '50px');
+
+        const savedVolume = this.registry.get('volume') !== undefined ? this.registry.get('volume') : 1;
+        this.sound.volume = savedVolume;
+        this.music = this.sound.add('pausa', { loop: true });
+        this.music.play();
 
         // Botón reanudar
         this.crearBoton(480, 320, 320, 64, 8, 'Reanudar', null, () => {
+            if (this.music) {
+                this.music.stop();
+                this.music.destroy();
+            }
             this.scene.resume('GameScene');
             this.scene.stop();
         }, '#000000');
 
         // Botón volver al menú
         this.crearBoton(480, 410, 320, 64, 8, 'Volver al menu', null, () => {
+            if (this.music) {
+                this.music.stop();
+                this.music.destroy();
+            }
             this.scene.stop('GameScene');
             this.scene.stop();
             this.scene.start('MenuScene');
