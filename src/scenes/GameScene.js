@@ -122,8 +122,11 @@ export class GameScene extends Phaser.Scene {
         this.platforms.add(platSolid);
 
         //Plataformas de la pagoda
-
         platSolid = this.add.rectangle(225, 413, 512, 134).setOrigin(0, 0);
+        this.physics.add.existing(platSolid, true);
+        this.platforms.add(platSolid);
+
+        platSolid = this.add.rectangle(337, 380, 288, 33).setOrigin(0, 0);
         this.physics.add.existing(platSolid, true);
         this.platforms.add(platSolid);
 
@@ -225,12 +228,13 @@ export class GameScene extends Phaser.Scene {
             platform.body.checkCollision.left = false;
         });
 
-
+        //Agua subiendo
         this.deathzone = this.physics.add.sprite(480, 850, 'olas');
         this.deathzone.body.setAllowGravity(false);
         this.deathzone.setVelocityY(-5);
         this.deathzone.body.setSize(this.deathzone.width * 2, this.deathzone.height);
         this.deathzone.body.setOffset(-this.deathzone.width / 2, 10);
+        this.deathzone.setDepth(10);
 
         // Looping background music con el volumen de SettingsScene
         const savedVolume = this.registry.get('volume') !== undefined ? this.registry.get('volume') : 1;

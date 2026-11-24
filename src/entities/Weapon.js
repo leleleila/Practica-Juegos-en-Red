@@ -24,6 +24,7 @@ export class Weapon {
                 break;
         }
 
+        this.sprite.setDepth(0);
         this.sprite.body.setAllowGravity(false);
 
         this.scene.tweens.add({

@@ -88,14 +88,14 @@ export class SettingsScene extends BaseScene {
 
         this.crearBoton(210 - 130, 360, 70, 55, 8, '-', null,  () => {
             const rondaAct = this.registry.get('ronda');
-            const nuevaRonda = Math.max(minRond, rondaAct - 1);
+            const nuevaRonda = Math.max(minRond, rondaAct - 2);
             this.registry.set('ronda', nuevaRonda);
             textoRond.setText(`${nuevaRonda}`);
         }, '#000000');
 
         this.crearBoton(210 + 130, 360, 70, 55, 8, '+', null, () => {
             const rondaAct = this.registry.get('ronda');
-            const nuevaRonda = Math.min(maxRond, rondaAct + 1);
+            const nuevaRonda = Math.min(maxRond, rondaAct + 2);
             this.registry.set('ronda', nuevaRonda);
             textoRond.setText(`${nuevaRonda}`);
         }, '#000000');
