@@ -38,7 +38,7 @@ export class GameScene extends Phaser.Scene {
         this.load.audio('hit', 'assets/audio/hit.mp3');
 
         // Background music
-        this.load.audio('music', 'assets/audio/music.mp3');
+        this.load.audio('gameplay', 'assets/audio/gameplay.mp3');
     }
 
     loadPlayerSpritesheet(key, path) {
@@ -223,7 +223,7 @@ export class GameScene extends Phaser.Scene {
         // Looping background music con el volumen de SettingsScene
         const savedVolume = this.registry.get('volume') !== undefined ? this.registry.get('volume') : 1;
         this.sound.volume = savedVolume;
-        this.music = this.sound.add('music', { loop: true });
+        this.music = this.sound.add('gameplay', { loop: true });
         this.music.play();
 
         // Pause/resume the music with the scene and stop it on exit

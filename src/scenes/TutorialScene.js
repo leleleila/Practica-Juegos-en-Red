@@ -9,7 +9,7 @@ export class TutorialScene extends BaseScene {
 
     preload() {
         this.load.image('boton_sencillo', 'assets/images/botonsupersencillo.png');
-        this.load.image('boton_volver', 'assets/images/boton_volver.png');
+        this.load.image('boton_volver', 'assets/images/boton_volver.png');   
     }
     
     create() {
@@ -46,6 +46,9 @@ export class TutorialScene extends BaseScene {
             this.crearBotonNoInteractivo(780, 270, 230, 50, 8, `Izquierda: ${this.flechaTecla(globalControls.p2.left)}`, '#000000', '25px');
             this.crearBotonNoInteractivo(780, 330, 230, 50, 8, `Derecha: ${this.flechaTecla(globalControls.p2.right)}`, '#000000', '25px');
             this.crearBotonNoInteractivo(780, 390, 230, 50, 8,`Abajo: ${this.flechaTecla(globalControls.p2.down)}`, '#000000', '25px');
+
+        // Botón pausa
+        this.crearBotonNoInteractivo(480, 300, 230, 50, 8,`Pausa: esc`, '#000000', '25px');
 
         // Botón comenzar partida
         this.crearBoton(800, 500, 300, 50, 8, 'Comenzar partida', 'GameScene', null, '#000000', '25px');

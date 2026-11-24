@@ -11,6 +11,7 @@ export class MenuScene extends BaseScene {
         this.load.image('boton_sencillo', 'assets/images/botonsupersencillo.png');
         this.load.image('logo', 'assets/images/logo.png');
         this.load.image('fondo', 'assets/images/fondo.png');
+        this.load.audio('gameplay', 'assets/audio/gameplay.mp3');
     }
 
     create() {
