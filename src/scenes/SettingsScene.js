@@ -18,7 +18,7 @@ export class SettingsScene extends BaseScene {
         this.cameras.main.setBackgroundColor('#91dfeb');
 
         // Título ajustes
-        this.crearTexto(480, 70, 'AJUSTES', { fontSize: '48px' });
+        this.crearTexto(480, 70, 'AJUSTES', '#000000', '40px');
 
         // Control de volumen
         // Guardamos el volumen en el registro global de Phaser
@@ -28,7 +28,7 @@ export class SettingsScene extends BaseScene {
         this.sound.volume = this.registry.get('volume');
 
         // Volumen música
-        this.crearTexto(210, 160, 'VOLUMEN MUSICA', { fontSize: '28px' });
+        this.crearTexto(210, 160, 'VOLUMEN MUSICA', '#000000', '28px');
         const volText = this.crearTexto(210, 210, `${Math.round(this.sound.volume * 100)}%`, { fontSize: '32px' });
 
         // Botón bajar volumen
@@ -50,7 +50,7 @@ export class SettingsScene extends BaseScene {
         });
 
         // Volumen efectos de sonido
-        this.crearTexto(745, 160, 'VOLUMEN EFECTOS', { fontSize: '28px' });
+        this.crearTexto(745, 160, 'VOLUMEN EFECTOS', '#000000','28px' );
         const volumen = this.crearTexto(745, 210, `${Math.round(this.sound.volume * 100)}%`, { fontSize: '32px' });
 
         // Botón bajar volumen
@@ -74,8 +74,6 @@ export class SettingsScene extends BaseScene {
         // Botón que lleva a la pantalla de personalizar teclas
         const btnTeclas = this.crearBoton(210, 480, 390, 55, 8, 'PERSONALIZAR TECLAS', 'ControlsScene', null, '#000000');
         btnTeclas.getAt(1).setFontSize('30px');
-        
-
     
       
         if (!this.registry.get('ronda')) {
@@ -85,19 +83,19 @@ export class SettingsScene extends BaseScene {
         const minRond = 3;
         const maxRond = 15;
 
-        this.crearTexto(210, 310, 'NUMERO DE RONDAS', 28); 
+        this.crearTexto(210, 310, 'NUMERO DE RONDAS', '#000000','28px' ); 
         const textoRond = this.crearTexto(210, 360, `${this.registry.get('ronda')}`, { fontSize: '32px' });
 
         this.crearBoton(210 - 130, 360, 70, 55, 8, '-', null,  () => {
             const rondaAct = this.registry.get('ronda');
-            const nuevaRonda = Math.max(minRond, rondaAct - 2);
+            const nuevaRonda = Math.max(minRond, rondaAct - 1);
             this.registry.set('ronda', nuevaRonda);
             textoRond.setText(`${nuevaRonda}`);
         }, '#000000');
 
         this.crearBoton(210 + 130, 360, 70, 55, 8, '+', null, () => {
             const rondaAct = this.registry.get('ronda');
-            const nuevaRonda = Math.min(maxRond, rondaAct + 2);
+            const nuevaRonda = Math.min(maxRond, rondaAct + 1);
             this.registry.set('ronda', nuevaRonda);
             textoRond.setText(`${nuevaRonda}`);
         }, '#000000');
