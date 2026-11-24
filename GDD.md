@@ -1,7 +1,7 @@
   
 **Juegos en Red**
 
-**Práctica-Fase 1**  
+**Práctica-Fase 2**  
 **Grupo G**
 
 ***Grado en Diseño y Desarrollo de Videojuegos***  
@@ -33,13 +33,15 @@ Aimar Hernández Holgado, [a.hernandezh.2024@alumnos.urjc.es](mailto:a.hernandez
 
 [**8\. Comunicación y marketing**](#8.-comunicación-y-marketing)
 
-[**9\. Referencias**](#9.-referencias)
+[**9\. Contenido no implementado**](#9.-contenido-no-implementado)
+
+[**10\. Referencias**](#10.-referencias)
 
 # **1\. Introducción** {#1.-introducción}
 
 ## **1.1. Concepto del juego**
 
-**Rivals Through Ages** es un juego de luchas para dos jugadores en el que se tendrán que pelear en una arena para ser el último en pie. La idea principal es que cada jugador controle a un personaje, los cuales llevarán un arma con la que tendrán que intentar eliminar al jugador contrincante para ganar la partida.
+**Rivals Through Ages** es un juego de lucha para dos jugadores en el que se tendrán que pelear en una arena para ser el último en pie. La idea principal es que cada jugador controle a un personaje, los cuales llevarán un arma con la que tendrán que intentar eliminar al jugador contrincante para ganar la partida.
 
 ## **1.2. Propuesta de valor**
 
@@ -47,7 +49,7 @@ Aimar Hernández Holgado, [a.hernandezh.2024@alumnos.urjc.es](mailto:a.hernandez
 
 - Al contrario que en la mayoría de juegos de su género, en **Rivals Through Ages** el conjunto de armas disponibles varía según el escenario en el que se dé el combate. Además, estas armas se ajustan a la temática del entorno. Ej: katanas en el escenario ambientado en el Japón medieval.   
 - Mecánicas únicas en cada escenario.  
-- Progresión de la dificultad distinta según el escenario. Si eliges jugar en modo difícil, los escenarios irán añadiendo mecánicas nuevas según vayan progresando las rondas.
+- Progresión de la dificultad distinta según el escenario. Con el avance del tiempo o las rondas, se añaden nuevas mecánicas a cada escenario para dificultar la partida.
 
 
 # **2\. Especificaciones básicas** {#2.-especificaciones-básicas}
@@ -60,7 +62,7 @@ Aimar Hernández Holgado, [a.hernandezh.2024@alumnos.urjc.es](mailto:a.hernandez
 | **Público objetivo**  | Jugadores jóvenes y adultos |
 | **Clasificación PEGI**  | PEGI 12 (Violencia no realista) |
 | **Plataforma**  | Navegador web (PC), desarrollado con Phaser   |
-| **Duración de una partida**  | 5-10 minutos |
+| **Duración de una partida**  | 1-2 minutos |
 | **Representación**  | 2D  |
 | **Licencia**  | Apache 2.0  |
 
@@ -79,7 +81,7 @@ Para dos personas jugando en el mismo dispositivo (multijugador local):
 | **Moverse a la izquierda** | A | ← |
 | **Moverse a la derecha** | D | → |
 | **Saltar** | W | ↑ |
-| **Acción especial** | Mayús | O |
+| **Bolsillo** | Mayús | O |
 | **Disparar** | Espacio | P |
 | **Pausa** | Esc | Esc |
 
@@ -92,7 +94,7 @@ Para dos personas jugando en el mismo dispositivo (multijugador local):
 - **Aparición de armas y objetos:** a lo largo de la partida irán apareciendo armas y objetos en diferentes puntos del escenario que los jugadores pueden recoger y utilizar a su favor.  
 - **Recogida:**   
   - **De armas:** permite recoger un arma que haya aparecido por el mapa para poder utilizarla. Cada jugador solo puede llevar un arma a la vez, por lo que recoger un arma en posesión de otra hará que la antigua sea sustituida y desaparezca.   
-  - **De objetos:** permite recoger un objeto que haya aparecido por el mapa. Este se guardará en el “bolsillo” del jugador para poder desplegarlo cuando lo necesite. De nuevo, cada jugador solo puede llevar un objeto a la vez; si recoge uno nuevo, este sustituirá al antiguo.  
+  - **De objetos:** permite recoger un objeto que haya aparecido por el mapa. El efecto de este se aplicará al instante al jugador. Los jugadores pueden acumular efectos de varios objetos al mismo tiempo si continúan recogiendo objetos antes de que los efectos previos desaparezcan.  
     
 
 ### **3.3.2. Mecánicas ligadas a escenarios**
@@ -101,7 +103,7 @@ Para dos personas jugando en el mismo dispositivo (multijugador local):
 
 - **Gravedad baja (Espacio Exterior):** más que una mecánica como tal, en el escenario lunar, se produce una modificación de las físicas básicas del juego. La gravedad es más tenue en este entorno, por lo que los jugadores pasarán más tiempo en el aire, lo que los volverá predecibles y, por ende, más vulnerables. En vez de una ventaja, este efecto cambia por completo la forma de afrontar la partida.
 
-- **Subida del nivel del agua (Medieval Japonesa):** a medida que avanza la partida, el nivel del agua irá subiendo, haciendo que los jugadores cada vez tengan menos espacio para luchar.
+- **Subida del nivel del agua (Medieval Japonesa):** a medida que avanza la partida, el nivel del agua (es letal para los jugadores) irá subiendo, haciendo que estos tengan cada vez menos espacio para luchar.
 
 - **Tormenta de arena (Lejano Oeste):** progresivamente irá apareciendo una tormenta de arena que dificultará cada vez más la visión de los jugadores.
 
@@ -132,8 +134,7 @@ Para dos personas jugando en el mismo dispositivo (multijugador local):
 
 ### **3.3.4. Sistema de puntuación**
 
-Cada partida consta de “x” número de rondas según la dificultad que elijan los jugadores.  
-El número de rondas que gane cada jugador se va contabilizando hasta que acabe la partida. Una vez terminada, saldrá por pantalla cuántas rondas ha ganado cada jugador y, por tanto, cuál es el ganador final. 
+Cada partida consta de “x” número de rondas o eliminaciones que los jugadores pueden configurar a voluntad desde el menú. El número de eliminaciones que consigue cada jugador se va contabilizando hasta que acabe la partida. Esto ocurre cuando un jugador consigue tanta ventaja de rondas que la partida no puede ser remontada por su oponente. Es decir, las partidas son “al mejor de x rondas”, no “al primero que alcance x eliminaciones”. Una vez terminada, saldrá por pantalla cuántas rondas ha ganado cada jugador y, por tanto, cuál es el ganador final. No existe un límite de tiempo para las rondas. En vez de eso, el escenario y sus peligros se encargarán de eliminar a los jugadores una y otra vez si estos no consiguen entre ellos. 
 
 | Modo | Número de rondas |
 | :---: | :---: |
@@ -192,7 +193,7 @@ Cada escenario cuenta con su paleta de colores representativa acorde con su ambi
 
 | Escenario | Colores principales |
 | :---: | :---: |
-| Japón Medieval | ![Paleta del escenario japones](img/paletajapon.png) |
+| Japón Medieval | ![Paleta del escenario japones](img/paletajapon2.png) |
 | Lejano Oeste | ![Paleta del escenario del Lejano Oeste](img/paletawest.png) |
 | Espacio Exterior | ![Paleta del escenario espacial](img/paletaspace.png) |
 
@@ -220,13 +221,15 @@ Cada escenario cuenta con su paleta de colores representativa acorde con su ambi
 
 | Pista | Escena | Estilo / ambiente | Fuente / licencia |
 | :---: | :---: | :---: | :---: |
-| *Getting Started* | Menú principal | Chiptune calmado | Propia |
-| *Pagoda Peak* | Escenario Japón Medieval | Chiptune que incorpora instrumentos tradicionales de la música japonesa, como el biwa y el taiko. | Propia |
+| *Getting Started* | Menú principal | Chiptune calmado | Pixabay, licencia creative commons |
+| *Pagoda Peak* | Escenario Japón Medieval | Chiptune que incorpora instrumentos tradicionales de la música japonesa, como el biwa y el taiko. | Pixabay, licencia creative commons |
 | *It’s High Noon* | Escenario Lejano Oeste | Chiptune acelerado con piano de salón típico de bandas sonoras del Lejano Oeste | Propia |
 | *Killer Music From Outer Space* | Escenario Espacio Exterior | Chiptune rápido, con vibra sci-fi. | Propia |
-| *See You Next Time* | Final de la partida | Chiptune calmado | Propia |
+| *See You Next Time* | Final de la partida | Chiptune calmado | Pixabay, licencia creative commons |
 
 ## **6.2. Efectos de sonido**
+
+Efectos del paquete rpg essentials sound efects, descargado de itch.io. Creador: Leohpaz.
 
 | Efecto | Momento en el que se reproduce |
 | :---: | :---: |
@@ -260,13 +263,56 @@ Cada escenario cuenta con su paleta de colores representativa acorde con su ambi
 * **Canales:** redes sociales (X, Instagram, Reddit), itch.io, Newgrounds, Game Jolt...  
 * **Calendario:** teaser en noviembre, devblog semanal en nuestras redes sociales, lanzamiento en diciembre.  
 * **Material:** tráiler, capturas, GIF de jugabilidad, press kit.  
-* **Eslogan:** «Las peleas más divertidas de los últimos tiempos».
+* **Eslogan:** «Las peleas más divertidas de todos los tiempos».
 
-# **9\. Referencias** {#9.-referencias}
+# **9\. Referencias** {#9.-contenido-no-implementado}
+
+A partir del feedback obtenido en la primera fase de la práctica obligatoria, se decidió recortar contenido planeado para "Rivals Through Ages" con el objetivo de adaptar el alcance del juego al de la práctica. Por lo que una parte notable del juego ha sido descartada o simplemente será implementada a futuro.
+
+Los recortes llevados a cabo incluyen los siguientes apartados y contenidos:
+
+## **9.1 Mecánicas principales**
+
+Los personajes iban a contar con una mecánica de “bolsillo”. De haberse incluido, cuando los personajes cogieran un objeto, este se guardaría en el bolsillo listo para ser activado por el jugador cuando este lo necesitara mediante una tecla de “bolsillo” (“mayús” para el jugador 1, “o” para el jugador 2). Actualmente, el efecto de los objetos se aplica instantáneamente a los jugadores cuando hacen contacto con estos.
+
+| Acción | Jugador 1 | Jugador 2 |
+| :---: | :---: | :---: |
+| **Bolsillo** | Mayús | O |
+
+## **9.2 Escenarios**
+
+Como recomendación, se sugirió al equipo reducir la cantidad de escenarios a implementar de los tres planteados y presentados inicialmente, a solo uno. Se eligió como escenario principal aquel ambientado en el Japón medieval, mientras que los otros dos (“El Lejano Oeste” y “La Colonia Espacial”) no fueron trabajados, junto con sus armas específicas, mecánicas y música.
+
+## **9.3 Objetos y power-ups**
+
+El único objeto no añadido a la práctica fue la cortina de humo.
+
+| Power up | Efecto | Duración | Aparición |
+| :---: | :---: | :---: | :---: |
+| Cortina de humo | Reduce la visibilidad en un área determinada | 5s | Aleatoria cada x segundos |
+
+## **9.4 Funcionamiento de la partida**
+
+El recorte de contenido, específicamente el de la cantidad de escenarios, también afectó al funcionamiento de la partida. La idea inicial era que el jugador contara con un número limitado de vidas cada vez que visitara un escenario, independiente del número de rondas elegido. Cuando solo quedara un jugador en pie en el escenario, este sería considerado el ganador de la ronda y los personajes reaparecerían con sus vidas restauradas en otro de los escenarios. El bucle se repetiría hasta que un jugador tuviera un número de victorias/rondas ganadas irremontable para el rival (respecto al número de rondas restantes de entre las configuradas desde el menú). 
+
+Además, tampoco se incluyó el sistema de selección de dificultad. Este dictaría el número de rondas a jugar o si las mecánicas únicas de los escenarios estarían activas o no. Los jugadores podrían elegir entre jugador con dificultad “fácil”, “media” o “difícil”.
+
+En la implementación realizada para esta práctica, a falta de varios escenarios, toda la partida se desarrolla en la misma arena de combate y se equiparan el número de veces que eliminas al rival con el número de rondas ganadas. Por otro lado, la cantidad de rondas/eliminaciones en juego se pueden elegir a voluntad. 
+
+# **10\. Referencias y Anexos** {#10.-referencias}
 
 Inspiraciones para la banda sonora:
 
 - Melodías chiptune por Jonathan So: [https\://soundcloud.com/jonathan-so-988423341/sets/the-game-creators-pack-audio](https://soundcloud.com/jonathan-so-988423341/sets/the-game-creators-pack-audio)  
-- Melodías japonesas: [https\://youtu.be/\_M4K5wk9DCM?si=kPLGYHvMrnuOkjln](https://youtu.be/_M4K5wk9DCM?si=kPLGYHvMrnuOkjln)  
 - Melodías del lejano oeste: [https\://youtu.be/WKlcTG8GbB8?si=Xi\_eP7rpWFG5\_kr1](https://youtu.be/WKlcTG8GbB8?si=Xi_eP7rpWFG5_kr1)  
 - Melodía espacial: [Cozy Space Music — 6 Seamless Chiptune Loops (WAV) by Spaceyyy](https://aquumgifts.itch.io/cozy-space-music#:~:text=Six%20short%20chiptune%20tracks%20for%20sci-fi%20and%20arcade,effects%20to%20match%3A%20Cozy%20Space%20SFX%20%2846%20sounds%29.) 
+
+Melodías utilizadas: 
+- Escenario japonés: [https://pixabay.com/es/music/titulo-principal-samurai-lofium-292016/](https://pixabay.com/es/music/titulo-principal-samurai-lofium-292016/)
+- Pantalla final: [https://pixabay.com/es/music/porcelana-year-of-tranquility-184919/](https://pixabay.com/es/music/porcelana-year-of-tranquility-184919/)
+- Menú principal: [https://pixabay.com/music/world-japan-koto-folk-background-music-124876/](https://pixabay.com/music/world-japan-koto-folk-background-music-124876/)
+- Efectos de sonido descargados de: [https://leohpaz.itch.io/rpg-essentials-sfx-free](https://leohpaz.itch.io/rpg-essentials-sfx-free)
+
+Efectos de sonido provenientes del paquete rpg essentials sound efects, descargado de itch.io. Creador: Leohpaz.
+
+
