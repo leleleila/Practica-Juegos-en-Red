@@ -480,12 +480,16 @@ export class GameScene extends Phaser.Scene {
     
         // Comprueba si algún jugador ha alcanzado el número de rondas puesto
         const totalRond = this.registry.get('ronda') || 3;
+        const diferencia = Math.abs(this.score.player1 - this.score.player2);
+        const rondasRestantes = totalRond - (this.score.player1 + this.score.player2);
 
-        if(this.score.player1 >= totalRond || this.score.player2 >= totalRond){
+        if(diferencia >= rondasRestantes || this.score.player1 >= totalRond || this.score.player2 >= totalRond){ //Mantengo las otras condiciones por si acaso
             this.music.stop();
             this.scene.start('GameOverScene');
-        }
+        };
+        
     }
+
 
     //Ataque de un jugador
     playerAttack(player)
