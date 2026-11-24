@@ -13,7 +13,8 @@ export class Player {
         this.weapon = 'null';
 
         this.sprite = scene.physics.add.sprite(x, y, spriteSheetKey, 0);
-        this.sprite.body.setSize(32, 32);
+        this.sprite.body.setSize(13, 27);
+        this.sprite.body.setOffset(20,12);
         this.sprite.setCollideWorldBounds(false);
     }
 }
