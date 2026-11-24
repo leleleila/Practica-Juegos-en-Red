@@ -312,6 +312,9 @@ export class GameScene extends Phaser.Scene {
         this.scoreLeft = this.add.text(400, 50, '0', { fontSize: '48px' }).setOrigin(0.5);
         this.scoreRight = this.add.text(608, 50, '0', { fontSize: '48px' }).setOrigin(0.5);
 
+        // Tarjetas de ayuda por encima
+        this.scene.pause();
+        this.scene.launch('HelpScene');
     }
 
     SPRITESHEETS = ['player_blue', 'player_purple']

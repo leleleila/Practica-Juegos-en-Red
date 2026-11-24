@@ -7,9 +7,10 @@ import { ControlsScene } from './scenes/ControlsScene.js';
 import { GameOverScene } from './scenes/GameOverScene.js';
 import { CreditsScene } from './scenes/CreditsScene.js';
 import { TutorialScene } from './scenes/TutorialScene.js';
+import { HelpScene } from './scenes/HelpScene.js';
 
 const config = {
-    type: Phaser.AUTO,      // WebGL if available; otherwise, Canvas
+    type: Phaser.AUTO, // WebGL if available; otherwise, Canvas
     width: 960,
     height: 540,
     pixelArt: true, // Para evitar el desenfoque
@@ -24,7 +25,7 @@ const config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
-    scene: [MenuScene, SettingsScene, ControlsScene, GameScene, PauseScene, CreditsScene, TutorialScene, GameOverScene]      // The first scene starts automatically
+    scene: [MenuScene, SettingsScene, ControlsScene, GameScene, PauseScene, HelpScene, CreditsScene, TutorialScene, GameOverScene]// The first scene starts automatically
 };
 
 const game = new Phaser.Game(config);
